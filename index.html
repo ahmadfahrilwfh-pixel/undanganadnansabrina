@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wedding of Sabrina & Adnan</title>
     
-    <!-- Google Fonts: Kombinasi Serif Royal, Script Mewah, & Modern Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome 6.4.0 Full Open Source Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Chart.js untuk Grafik RSVP -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
@@ -29,7 +26,7 @@
             --bg-base: #FAF6F0;
             --text-color: #262626; 
             --text-muted: #4A4A4A;
-            --glass-bg: rgba(255, 254, 250, 0.78);
+            --glass-bg: rgba(255, 254, 250, 0.85);
             --glass-border: rgba(212, 175, 55, 0.4);
             --overlay: linear-gradient(135deg, rgba(250, 246, 240, 0.5), rgba(250, 246, 240, 0.85));
             --main-bg-overlay: linear-gradient(to bottom, rgba(250, 246, 240, 0.75), rgba(250, 246, 240, 0.9));
@@ -41,7 +38,7 @@
             --bg-base: #0D0D0E;
             --text-color: #F8F9FA; 
             --text-muted: #D1D5DB;
-            --glass-bg: rgba(18, 18, 20, 0.82);
+            --glass-bg: rgba(18, 18, 20, 0.88);
             --glass-border: rgba(212, 175, 55, 0.35);
             --overlay: linear-gradient(135deg, rgba(13, 13, 14, 0.6), rgba(13, 13, 14, 0.92));
             --main-bg-overlay: linear-gradient(to bottom, rgba(13, 13, 14, 0.85), rgba(13, 13, 14, 0.96));
@@ -206,7 +203,7 @@
         .comment-box strong { color: var(--gold-mid); font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
         .badge { font-size: 0.7rem; padding: 5px 12px; border-radius: 30px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-left: 8px; }
 
-        .floating-controls { position: fixed; bottom: 25px; right: 25px; z-index: 99999; display: flex; flex-direction: column; gap: 15px; }
+        .floating-controls { position: fixed; bottom: 85px; right: 25px; z-index: 99999; display: flex; flex-direction: column; gap: 15px; transition: bottom 0.6s ease; }
         .ctrl-btn { background: var(--gold-gradient); color: #000; border: none; width: 52px; height: 52px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.25); display: flex; justify-content: center; align-items: center; transition: 0.3s; }
         .ctrl-btn:hover { transform: scale(1.1); }
 
@@ -217,15 +214,58 @@
         
         .atm-card { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 30px 25px; border-radius: 20px; color: white; margin: 20px 0; text-align: left; position: relative; border: 1px solid rgba(255,255,255,0.15); }
 
-        footer { padding: 60px 24px; text-align: center; font-size: 0.85rem; border-top: 1px solid var(--glass-border); position: relative; z-index: 5; background: rgba(0,0,0,0.02); }
+        footer { padding: 60px 24px 120px; text-align: center; font-size: 0.85rem; border-top: 1px solid var(--glass-border); position: relative; z-index: 5; background: rgba(0,0,0,0.02); }
         .footer-icons { display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; }
         .footer-icons a { display: inline-flex; justify-content: center; align-items: center; width: 45px; height: 45px; background: var(--gold-gradient); color: #000; border-radius: 50%; font-size: 1.2rem; text-decoration: none; transition: 0.3s; }
+
+        /* ==========================================================================
+           PREMIUM BOTTOM NAVIGATION MENU BAR
+           ========================================================================== */
+        .bottom-nav {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 550px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-top: 1px solid var(--glass-border);
+            border-left: 1px solid var(--glass-border);
+            border-right: 1px solid var(--glass-border);
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -10px 35px rgba(170, 124, 17, 0.15);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 10px;
+            z-index: 99999;
+            transition: bottom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+        }
+        .bottom-nav.show { bottom: 0; }
+        .nav-item {
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            flex: 1;
+            transition: all 0.3s ease;
+            gap: 5px;
+        }
+        .nav-item i { font-size: 1.15rem; transition: transform 0.3s; }
+        .nav-item:hover, .nav-item.active { color: var(--gold-mid); }
+        .nav-item:hover i { transform: translateY(-3px); }
     </style>
 </head>
 <body class="lock-scroll">
 
-    <!-- FLOATING ACTIONS CONTROL WIDGET -->
-    <div class="floating-controls">
+    <div class="floating-controls" id="floating-widget">
         <button class="ctrl-btn" onclick="toggleTheme()" title="Ubah Tema Cerah/Gelap">
             <i class="fas fa-moon" id="theme-icon"></i>
         </button>
@@ -234,36 +274,36 @@
         </button>
     </div>
 
-    <!-- SOUND BACKSOUND ISLAMI PREMIUM (MAJESTIC MIDDLE EASTERN STRING OUT MEDITATION) -->
     <audio id="bgm-player" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"></audio>
 
-    <!-- 3D FLOATING PETALS CONTAINER -->
     <div id="petal-container"></div>
 
-    <!-- ==========================================================================
-       1. WELCOME SCREEN
-       ========================================================================== -->
     <div id="cover">
-        <h3 style="letter-spacing: 5px; font-size: 1rem; font-weight: 600; color: var(--gold-dark);" class="reveal-element">THE WEDDING OF</h3>
-        <h1 class="title-names reveal-element">Sabrina & Adnan</h1>
+        <h3 style="letter-spacing: 5px; font-size: 1rem; font-weight: 600; color: var(--gold-dark);">THE WEDDING OF</h3>
+        <h1 class="title-names" style="margin: 5px 0;">Sabrina & Adnan</h1>
         
-        <div class="glass-card reveal-element" style="margin-top: 40px; padding: 30px 45px; min-width: 290px;">
+        <div class="glass-card" style="margin-top: 40px; padding: 30px 45px; min-width: 290px;">
             <p style="margin:0; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);">Kepada Yth. Bapak/Ibu/Saudara/i</p>
             <h2 id="guest-name" style="margin: 15px 0 10px; font-family: 'Montserrat'; font-weight: 600; font-size: 1.6rem; color: var(--text-color); filter:none;">Nama Tamu</h2>
             <p id="guest-address" style="margin:0; font-size: 0.9rem; color: var(--gold-dark); font-weight: 500;"></p>
         </div>
         
-        <button class="btn-gold reveal-element" onclick="openInvitation()">
+        <button class="btn-gold" onclick="openInvitation()">
             <i class="fas fa-envelope-open-text"></i> Buka Undangan
         </button>
     </div>
 
-    <!-- ==========================================================================
-       HALAMAN UTAMA CONTENTS WRAPPER
-       ========================================================================== -->
+    <div class="bottom-nav" id="mainNavigation">
+        <a href="#home" class="nav-item active"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="#bride" class="nav-item"><i class="fa-solid fa-user-hearts"></i><span>Mempelai</span></a>
+        <a href="#event" class="nav-item"><i class="fa-solid fa-calendar-stars"></i><span>Acara</span></a>
+        <a href="#lovestory" class="nav-item"><i class="fa-solid fa-book-heart"></i><span>Kisah</span></a>
+        <a href="#gift" class="nav-item"><i class="fa-solid fa-gift"></i><span>Kado</span></a>
+        <a href="#rsvp" class="nav-item"><i class="fa-solid fa-envelope-heart"></i><span>RSVP</span></a>
+    </div>
+
     <div class="main-wrapper">
 
-        <!-- 2. HOME SECTION -->
         <section id="home">
             <div class="reveal-element">
                 <h2>Pernikahan Kami</h2>
@@ -281,7 +321,7 @@
             </div>
 
             <div class="glass-card reveal-element" style="margin-top: 50px;">
-                <p class="arabic">وَمِنْ ءَايَٰtِهِۦٓ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَٰجًا لِّتَسْكُنُوٓا۟ إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِى ذَٰلِكَ لَءَايَٰتٍ لِّقَوْmٍ يَتَفَكَّرُونَ</p>
+                <p class="arabic">وَمِنْ ءَايَٰtِهِۦٓ أَنْ خَلَقَ لَكُم mِّنْ أَنفُسِكُمْ أَزْوَٰجًا لِّتَسْكُنُوٓا۟ إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِى ذَٰلِكَ لَءَايَٰtٍ لِّقَوْmٍ يَتَفَكَّرُونَ</p>
                 <p style="font-style: italic; color: var(--text-muted); line-height: 1.8; margin-top: 25px; font-size: 0.95rem;">
                     "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."
                     <br><br><strong style="color: var(--gold-mid); font-family: 'Cinzel'; font-size: 0.9rem;">QS. Ar-Rum: 21</strong>
@@ -289,7 +329,6 @@
             </div>
         </section>
 
-        <!-- 3. BRIDE & GROOM SECTION -->
         <section id="bride">
             <div class="glass-card reveal-element">
                 <div class="arabic" style="-webkit-text-fill-color: initial; background: none; color: var(--gold-mid); font-weight:700;">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ</div>
@@ -319,7 +358,6 @@
             </div>
         </section>
 
-        <!-- 4. EVENT TIMELINE SECTION -->
         <section id="event">
             <p style="font-size: 1.1rem; font-weight: 500; font-style: italic; color: var(--gold-dark); margin-bottom: 5px;" class="reveal-element">Insyaallah acara akan dilaksanakan pada:</p>
             <h2 class="reveal-element">Agenda Acara</h2>
@@ -346,7 +384,6 @@
             </div>
         </section>
 
-        <!-- 5. LOVE STORY & ADAB -->
         <section id="lovestory">
             <div class="glass-card reveal-element">
                 <h2>Kisah Cinta</h2>
@@ -389,7 +426,6 @@
             </div>
         </section>
 
-        <!-- 6. WEDDING GIFT -->
         <section id="gift" class="reveal-element">
             <div class="glass-card">
                 <h2>Kado Digital</h2>
@@ -398,7 +434,6 @@
             </div>
         </section>
 
-        <!-- 7. RSVP & UCAPAN DESIGN OVERHAUL -->
         <section id="rsvp" class="reveal-element">
             <div class="glass-card">
                 <h2>Konfirmasi Kehadiran</h2>
@@ -409,7 +444,6 @@
                     <input type="text" id="rsvp-name" readonly style="background: rgba(0,0,0,0.06); cursor: not-allowed;">
                     
                     <label>Konfirmasi Kedatangan</label>
-                    <!-- Tombol Interaktif Pengganti Dropdown Monoton -->
                     <div class="rsvp-button-group">
                         <button type="button" class="rsvp-trigger" data-status="Hadir">
                             <i class="fa-solid fa-circle-check"></i> Hadir
@@ -441,14 +475,12 @@
                 </div>
 
                 <h3 style="margin-top: 50px; font-family: 'Cinzel'; font-size: 1.25rem; font-weight: 700;">Statistik Kehadiran Riil</h3>
-                <!-- Container Chart yang Diubah Menjadi Bar Horizontal & Responsive -->
                 <div style="position: relative; width: 100%; height: 240px; margin-top: 20px;">
                     <canvas id="rsvpChart"></canvas>
                 </div>
             </div>
         </section>
 
-        <!-- 8. PENUTUP -->
         <section id="closing" class="reveal-element">
             <div class="arabic" style="-webkit-text-fill-color: initial; background: none; color: var(--gold-mid); font-weight: 700;">وَالسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ</div>
             <div style="margin: 35px 0;" class="reveal-element">
@@ -460,7 +492,6 @@
 
     </div>
 
-    <!-- MODAL POPUP 1: NOTIFIKASI SUKSES RSVP -->
     <div id="thankYouModal" class="modal">
         <div class="modal-content glass-card" style="max-width: 400px; padding: 40px 30px;">
             <div style="font-size: 4rem; color: #22c55e; margin-bottom: 15px;"><i class="fa-solid fa-circle-check animate-bounce"></i></div>
@@ -470,7 +501,6 @@
         </div>
     </div>
 
-    <!-- MODAL POPUP 2: DIGITAL GIFT -->
     <div id="giftModal" class="modal">
         <div class="modal-content glass-card" style="padding: 40px 25px; border-radius: 24px;">
             <h2 style="margin-top: 0; font-size: 1.6rem;">Rekening Kado Digital</h2>
@@ -501,25 +531,54 @@
             <a href="#" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
             <a href="#" target="_blank"><i class="fa-regular fa-envelope"></i></a>
         </div>
-        <p style="letter-spacing: 1.5px; line-height: 1.8; font-weight: 500; color: var(--text-muted);">Developed exclusively by Ahmad Fahril v.2.0<br>&copy; Copyright AMDF 2026. All Rights Reserved.</p>
+        <p style="letter-spacing: 1.5px; line-height: 1.8; font-weight: 500; color: var(--text-muted);">Developed exclusively by Ahmad Fahril v.2.0<br>© Copyright AMDF 2026. All Rights Reserved.</p>
     </footer>
 
-    <!-- ==========================================================================
-       6. CORE FUNCTIONAL ENGINE CODE
-       ========================================================================== -->
     <script>
-        // INTERSECTION OBSERVER ANIMASI SCROLL MULTI-ELEMENT
+        // INTERSECTION OBSERVER ANIMASI SCROLL MULTI-ELEMENT & TRACK ACTIVE NAV MENU
         const revealEntries = () => {
+            const observerOptions = { threshold: 0.12, rootMargin: "0px 0px -40px 0px" };
+            
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
                     }
                 });
-            }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+            }, observerOptions);
 
             document.querySelectorAll('.reveal-element').forEach((el) => observer.observe(el));
+
+            // Logic tambahan untuk highlight menu aktif saat di-scroll
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            window.addEventListener('scroll', () => {
+                let currentSectionId = "";
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - 250)) {
+                        currentSectionId = section.getAttribute('id');
+                    }
+                });
+
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href') === `#${currentSectionId}`) {
+                        item.classList.add('active');
+                    }
+                });
+            });
         };
+
+        // EVENT LISTENER KLIK NAV ITEM (SMOOTH SCROLL MANUAL HIGHLIGHT)
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
 
         // PEMBUATAN ELEMEN KELOPAK JATUH EMAS ROYAL
         const petalContainer = document.getElementById('petal-container');
@@ -575,7 +634,6 @@
         const urlParams = new URLSearchParams(window.location.search);
         const toParam = urlParams.get('to') || "Tamu_Undangan";
         
-        // Hashing aman parameter 'to' agar legal dijadikan Firestore Document ID
         const guestDocId = btoa(encodeURIComponent(toParam)).replace(/=/g, '');
 
         let guestName = "Tamu Undangan";
@@ -599,10 +657,16 @@
             });
         });
 
+        // ACTION BUKA UNDANGAN (MUNCULKAN MENU NAVIGASI BAWAH & ANIMASI)
         function openInvitation() {
             document.getElementById('cover').style.transform = "translateY(-100vh)";
             document.body.classList.remove('lock-scroll');
-            revealEntries(); // Aktifkan sistem observer animasi scroll setelah klik dibuka
+            
+            // Tampilkan Menu Utama & Sesuaikan Widget Floating
+            document.getElementById('mainNavigation').classList.add('show');
+            document.getElementById('floating-widget').style.bottom = "85px";
+
+            revealEntries(); 
             bgm.play().then(() => {
                 isAudioPlaying = true;
                 audioIcon.className = 'fas fa-music';
@@ -631,9 +695,6 @@
         }, 1000);
     </script>
 
-    <!-- ==========================================================================
-       7. FIRESTORE DATABASE & RESPONSIVE BAR CHART SYSTEM MODULE
-       ========================================================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, addDoc, doc, setDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -651,7 +712,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
-        // Pemisahan Koleksi: rsvp_status (1 ID / tamu) & rsvp_comments (unlimited)
         const statusCollection = collection(db, 'rsvp_status');
         const commentsCollection = collection(db, 'rsvp_comments');
 
@@ -664,7 +724,7 @@
             data: {
                 labels: ['Hadir', 'Tidak Hadir', 'Ragu-ragu', 'Tanpa Keterangan'],
                 datasets: [{
-                    data: [0, 0, 0, 100], // Default awal sebelum ada database terisi
+                    data: [0, 0, 0, 100], 
                     backgroundColor: ['#22c55e', '#ef4444', '#eab308', '#ffffff'],
                     borderColor: ['transparent', 'transparent', 'transparent', '#D4AF37'],
                     borderWidth: 1,
@@ -699,14 +759,12 @@
             btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Memproses...";
 
             try {
-                // 1. Set / Overwrite status kehadiran mutlak berbasis Unique ID
                 await setDoc(doc(db, "rsvp_status", guestDocId), {
                     name: document.getElementById('rsvp-name').value,
                     status: activeStatus,
                     timestamp: serverTimestamp()
                 });
 
-                // 2. Add doa baru ke koleksi komentar (Bisa tanpa batas / unlimited)
                 await addDoc(commentsCollection, {
                     name: document.getElementById('rsvp-name').value,
                     message: document.getElementById('rsvp-message').value,
@@ -718,7 +776,6 @@
                 btn.disabled = false;
                 btn.innerHTML = "<i class='fa-solid fa-paper-plane'></i> Kirim Pesan & Doa";
                 
-                // Munculkan Popup Terima Kasih Mewah
                 document.getElementById('thankYouModal').style.display = "flex";
 
             } catch (err) {
@@ -741,13 +798,11 @@
                 else if(data.status === "Ragu-ragu") countRagu++;
             });
 
-            // Kalkulasi Persentase Dinamis
             let pctHadir = totalTamu > 0 ? Math.round((countHadir / totalTamu) * 100) : 0;
             let pctTidak = totalTamu > 0 ? Math.round((countTidak / totalTamu) * 100) : 0;
             let pctRagu = totalTamu > 0 ? Math.round((countRagu / totalTamu) * 100) : 0;
-            let pctTanpaKet = totalTamu === 0 ? 100 : 0; // 100% Putih jika belum ada entri sama sekali
+            let pctTanpaKet = totalTamu === 0 ? 100 : 0; 
 
-            // Update Label Batang Langsung dengan Nilai Jumlah & Persentase Sesuai Request
             window.rsvpChart.data.labels = [
                 `Hadir: ${countHadir} (${pctHadir}%)`,
                 `Tidak Hadir: ${countTidak} (${pctTidak}%)`,
