@@ -6,9 +6,7 @@
     <title>The Wedding of Sabrina & Adnan</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Amiri&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
@@ -18,19 +16,17 @@
         :root { 
             --gold: #D4AF37; 
             --gold-hover: #AA7C11;
-            /* Tema Terang Default */
             --bg-color: #FDFBF7; 
             --text-color: #333333; 
             --card-bg: rgba(255, 255, 255, 0.85);
             --border-color: rgba(212, 175, 55, 0.4);
             --cover-gradient: linear-gradient(rgba(253, 251, 247, 0.7), rgba(253, 251, 247, 0.95));
             --input-bg: rgba(0, 0, 0, 0.05);
-            --text-muted: #666666;
+            --text-muted: #555555;
             --modal-bg: #FFFFFF;
         }
 
         [data-theme="dark"] {
-            /* Tema Gelap */
             --bg-color: #121212; 
             --text-color: #F4F4F4; 
             --card-bg: rgba(0, 0, 0, 0.65);
@@ -52,27 +48,23 @@
         }
 
         h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--gold); font-weight: normal; text-align: center; }
-        .arabic { font-family: 'Amiri', serif; font-size: clamp(1.5rem, 5vw, 2.5rem); color: var(--gold); text-align: center; }
+        .arabic { font-family: 'Amiri', serif; font-size: clamp(1.5rem, 5vw, 2.5rem); color: var(--gold); text-align: center; direction: rtl; line-height: 1.8; }
         
         /* ==============================
-           ANIMASI BUNGA BERGERAK (RESPONSIVE)
+           ANIMASI BUNGA BERGERAK (SUMBER TERBUKA WIKIMEDIA)
            ============================== */
         #floral-bg { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            z-index: -1; pointer-events: none; overflow: hidden; opacity: 0.8; 
+            z-index: -1; pointer-events: none; overflow: hidden; opacity: 0.7; 
         }
         .flower-item { 
             position: absolute; background-size: contain; background-repeat: no-repeat; 
             opacity: 0.6; animation: floatUp 20s infinite linear;
         }
-        /* Mawar */
-        .flower-1 { width: 150px; height: 150px; background-image: url('https://cdn-icons-png.flaticon.com/512/8208/8208462.png'); left: 5%; bottom: -150px; animation-duration: 25s; }
-        /* Melati / Bunga Putih */
-        .flower-2 { width: 120px; height: 120px; background-image: url('https://cdn-icons-png.flaticon.com/512/6198/6198083.png'); right: 10%; bottom: -150px; animation-duration: 20s; animation-delay: 5s; transform: scaleX(-1); }
-        /* Bunga Sakura / Pink Cerah */
-        .flower-3 { width: 100px; height: 100px; background-image: url('https://cdn-icons-png.flaticon.com/512/11105/11105835.png'); left: 40%; bottom: -150px; animation-duration: 18s; animation-delay: 2s; }
-        /* Daun Tropis / Elegan */
-        .flower-4 { width: 200px; height: 200px; background-image: url('https://cdn-icons-png.flaticon.com/512/1087/1087436.png'); right: -20px; bottom: -200px; animation-duration: 30s; animation-delay: 0s; }
+        .flower-1 { width: 150px; height: 150px; background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Red_rose.png/320px-Red_rose.png'); left: 5%; bottom: -150px; animation-duration: 25s; }
+        .flower-2 { width: 120px; height: 120px; background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Plumeria_alba_transparent.png/320px-Plumeria_alba_transparent.png'); right: 10%; bottom: -150px; animation-duration: 20s; animation-delay: 5s; transform: scaleX(-1); }
+        .flower-3 { width: 100px; height: 100px; background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Cherry_blossom_transparent.png/320px-Cherry_blossom_transparent.png'); left: 40%; bottom: -150px; animation-duration: 18s; animation-delay: 2s; }
+        .flower-4 { width: 120px; height: 120px; background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Leaf_transparent.png/320px-Leaf_transparent.png'); right: 5%; bottom: -200px; animation-duration: 30s; animation-delay: 0s; }
 
         @keyframes floatUp {
             0% { transform: translateY(0) rotate(0deg); opacity: 0; }
@@ -98,7 +90,6 @@
            ============================== */
         #cover { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
-            /* Menggunakan Path Sesuai Request */
             background: var(--cover-gradient), url('assets/img/cover-utama.webp') center/cover; 
             z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; 
             transition: top 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
@@ -125,9 +116,9 @@
         .profile { text-align: center; max-width: 300px; }
         .profile img { width: 180px; height: 180px; border-radius: 50%; border: 4px solid var(--gold); object-fit: cover; box-shadow: 0 0 20px rgba(212,175,55,0.3); }
         .profile h3 { font-family: 'Great Vibes', cursive; font-size: clamp(2rem, 4vw, 2.8rem); margin: 15px 0 5px; color: var(--text-color); }
-        .social-icons a { color: var(--gold); font-size: 1.5rem; margin: 0 10px; text-decoration: none; transition: 0.3s; }
-        .social-icons a:hover { transform: scale(1.1); }
-        .parents { font-size: 0.9rem; color: var(--text-muted); margin-top: 10px; line-height: 1.5; }
+        .social-icons a { display: inline-flex; justify-content: center; align-items: center; width: 35px; height: 35px; background: var(--gold); color: #fff; border-radius: 50%; font-size: 1.2rem; margin: 0 5px; text-decoration: none; transition: 0.3s; }
+        .social-icons a:hover { transform: scale(1.1); box-shadow: 0 4px 10px rgba(212, 175, 55, 0.5); }
+        .parents { font-size: 0.9rem; color: var(--text-muted); margin-top: 15px; line-height: 1.5; }
 
         /* Events */
         .event-card { background: var(--card-bg); padding: 30px; border-radius: 15px; margin: 20px auto; border: 1px solid var(--border-color); backdrop-filter: blur(5px); max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); color: var(--text-color); }
@@ -150,13 +141,34 @@
         .comment-box .badge { font-size: 0.7rem; padding: 3px 8px; border-radius: 10px; background: #333; margin-left: 10px; vertical-align: middle; color: #fff;}
         .chart-container { width: 100%; max-width: 350px; margin: 30px auto; }
 
-        /* Footer */
+        /* ==============================
+           FOOTER ICONS SERAGAM
+           ============================== */
         footer { padding: 40px 20px; text-align: center; font-size: 0.85rem; background: var(--card-bg); border-top: 1px solid var(--border-color); color: var(--text-muted); }
+        .footer-icons { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        .footer-icons a {
+            display: inline-flex; justify-content: center; align-items: center;
+            width: 45px; height: 45px; background: var(--gold); color: #fff;
+            border-radius: 50%; font-size: 1.3rem; text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .footer-icons a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.6);
+            background: var(--gold-hover);
+        }
         
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
         ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+        
+        /* Styling tambahan untuk list adab */
+        .adab-list { text-align: left; font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; list-style: none; padding: 0; }
+        .adab-list li { margin-bottom: 25px; display: flex; align-items: flex-start; gap: 15px; }
+        .adab-list i { color: var(--gold); font-size: 1.3rem; margin-top: 3px; }
+        .adab-content p { margin: 5px 0 0 0; }
+        .adab-arabic { font-family: 'Amiri', serif; font-size: 1.4rem; color: var(--gold); margin: 0 0 10px 0; direction: rtl; text-align: right; }
     </style>
 </head>
 <body>
@@ -197,7 +209,12 @@
             <div class="time-box"><span id="detik">00</span><br><small>Detik</small></div>
         </div>
 
-        <p style="margin-top: 50px; font-style: italic; color: var(--text-muted); line-height: 1.8;">"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya..." <br><br> (QS. Ar-Rum: 21)</p>
+        <div style="margin-top: 50px;">
+            <p class="arabic" style="font-size: clamp(1.2rem, 4vw, 1.8rem);">وَمِنْ ءَايَٰتِهِۦٓ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَٰجًا لِّتَسْكُنُوٓا۟ إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِى ذَٰلِكَ لَءَايَٰتٍ لِّقَوْمٍ يَتَفَكَّرُونَ</p>
+            <p style="font-style: italic; color: var(--text-muted); line-height: 1.8; margin-top: 15px;">
+                "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."<br><br> <strong>(QS. Ar-Rum: 21)</strong>
+            </p>
+        </div>
     </section>
 
     <section id="bride">
@@ -231,7 +248,7 @@
 
     <section id="event">
         <h2>Insyaallah Acara akan dilaksanakan:</h2>
-        <img src="https://cdn-icons-png.flaticon.com/512/833/833410.png" alt="Cincin" style="width: 80px; margin: 20px 0; filter: drop-shadow(0 0 10px rgba(212,175,55,0.8));"> 
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Red_rose.png/320px-Red_rose.png" alt="Cincin" style="width: 80px; margin: 20px 0; filter: drop-shadow(0 0 10px rgba(212,175,55,0.8));"> 
 
         <div class="event-card">
             <h3 style="margin-top:0;">Akad Nikah</h3>
@@ -268,12 +285,40 @@
             <p style="margin-top:0; font-size:0.95rem; color:var(--text-muted);">Hari bahagia dimana kami mengikat janji suci di hadapan Allah dan saksi untuk bersama selamanya.</p>
         </div>
 
-        <h3 style="margin-top: 60px;">Adab Menghadiri Walimah</h3>
-        <ul style="text-align: left; font-size: 0.95rem; color: var(--text-muted); line-height: 1.8;">
-            <li><i class="fas fa-check" style="color:var(--gold);"></i> Memenuhi undangan (HR. Bukhari 5173)</li>
-            <li><i class="fas fa-check" style="color:var(--gold);"></i> Mendoakan keberkahan untuk mempelai (HR. Muslim 82)</li>
-            <li><i class="fas fa-check" style="color:var(--gold);"></i> Menutup aurat & berpakaian sopan (QS. Al Ahzab 59)</li>
-            <li><i class="fas fa-check" style="color:var(--gold);"></i> Tidak berlebih-lebihan dalam berpakaian (HR. Tirmidzi 1091)</li>
+        <h3 style="margin-top: 80px;">Adab Menghadiri Walimah</h3>
+        <ul class="adab-list">
+            <li>
+                <i class="fas fa-envelope-open-text"></i>
+                <div class="adab-content">
+                    <p class="adab-arabic">إِذَا دُعِيَ أَحَدُكُمْ إِلَى الْوَلِيمَةِ فَلْيَأْتِهَا</p>
+                    <strong>Memenuhi Undangan</strong>
+                    <p>"Jika salah seorang di antara kalian diundang ke acara walimah (pernikahan), maka penuhilah undangan tersebut."<br><em>(HR. Bukhari no. 5173 & Muslim no. 1429)</em></p>
+                </div>
+            </li>
+            <li>
+                <i class="fas fa-hands-praying"></i>
+                <div class="adab-content">
+                    <p class="adab-arabic">بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِى خَيْرٍ</p>
+                    <strong>Mendoakan Keberkahan untuk Mempelai</strong>
+                    <p>"Semoga Allah memberkahimu di waktu bahagia dan memberkahimu di waktu susah, serta mengumpulkan kalian berdua dalam kebaikan."<br><em>(HR. Abu Daud no. 2130, Tirmidzi no. 1091)</em></p>
+                </div>
+            </li>
+            <li>
+                <i class="fas fa-person-dress"></i>
+                <div class="adab-content">
+                    <p class="adab-arabic" style="font-size: 1.2rem;">يَٰٓأَيُّهَا ٱلنَّبِىُّ قُل لِّأَزْوَٰجِكَ وَبَنَاتِكَ وَنِسَآءِ ٱلْمُؤْمِنِينَ يُدْنِينَ عَلَيْهِنَّ مِن جَلَٰبِيبِهِنَّ ۚ ذَٰلِكَ أَدْنَىٰٓ أَن يُعْرَفْنَ فَلَا يُؤْذَيْنَ ۗ وَكَانَ ٱللَّهُ غَفُورًا رَّحِيمًا</p>
+                    <strong>Menutup Aurat & Berpakaian Sopan</strong>
+                    <p>"Wahai Nabi! Katakanlah kepada istri-istrimu, anak-anak perempuanmu dan istri-istri orang mukmin, 'Hendaklah mereka mengulurkan jilbabnya ke seluruh tubuh mereka.' Yang demikian itu agar mereka lebih mudah untuk dikenali, sehingga mereka tidak diganggu. Dan Allah Maha Pengampun, Maha Penyayang."<br><em>(QS. Al-Ahzab: 59)</em></p>
+                </div>
+            </li>
+            <li>
+                <i class="fas fa-scale-balanced"></i>
+                <div class="adab-content">
+                    <p class="adab-arabic">كُلُوا وَاشْرَبُوا وَتَصَدَّقُوا وَالْبَسُوا غَيْرَ مَخِيلَةٍ وَلاَ سَرَفٍ</p>
+                    <strong>Tidak Berlebih-lebihan</strong>
+                    <p>"Makanlah, minumlah, bersedekahlah, dan berpakaianlah, dengan tidak berlebihan dan tidak sombong."<br><em>(HR. Ibnu Majah no. 3605, dinilai hasan oleh Al-Albani)</em></p>
+                </div>
+            </li>
         </ul>
     </section>
 
@@ -351,7 +396,7 @@
     </section>
 
     <footer>
-        <div class="footer-icons" style="margin-bottom: 20px;">
+        <div class="footer-icons">
             <a href="#"><i class="fa-brands fa-instagram"></i></a>
             <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
             <a href="#"><i class="fa-solid fa-envelope"></i></a>
@@ -374,10 +419,9 @@
                 themeIcon.classList.replace('fa-sun', 'fa-moon');
                 localStorage.setItem('weddingTheme', 'light');
             }
-            updateChartColor(); // Update warna teks di ChartJS
+            updateChartColor(); 
         }
 
-        // Cek Preferensi Tema saat Halaman Dimuat
         window.onload = () => {
             const savedTheme = localStorage.getItem('weddingTheme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -426,7 +470,7 @@
             alert("Nomor rekening disalin: " + text);
         }
 
-        // --- 4. ANIMASI BACKGROUND PARALLAX TAMBAHAN PADA MOUSEMOVE ---
+        // --- 4. ANIMASI BACKGROUND PARALLAX TAMBAHAN ---
         document.addEventListener("mousemove", parallaxEffect);
         document.addEventListener("touchmove", parallaxEffect); 
         
@@ -439,7 +483,6 @@
             document.querySelectorAll('.flower-item').forEach(flower => {
                 let speed = flower.getAttribute('data-speed');
                 let xPos = (window.innerWidth / 2 - x) * speed / 100;
-                // Kita hanya geser sedikit X nya saja agar tidak merusak animasi CSS floatUp bawaannya
                 flower.style.marginLeft = `${xPos}px`;
             });
         }
@@ -456,27 +499,22 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // ==========================================
-        // WAJIB: MASUKKAN CONFIG FIREBASE KAMU DI SINI
-        // ==========================================
-const firebaseConfig = {
-  apiKey: "AIzaSyBKYztNuwvRKsMKLyOtEUmFsMSomGX-WAQ",
-  authDomain: "undangansabrinaadnan.firebaseapp.com",
-  projectId: "undangansabrinaadnan",
-  storageBucket: "undangansabrinaadnan.firebasestorage.app",
-  messagingSenderId: "159904851753",
-  appId: "1:159904851753:web:a15476094bfe49c19bf938",
-  measurementId: "G-0HVZ2SLTMQ"
-};
-
+        const firebaseConfig = {
+            apiKey: "AIzaSyBKYztNuwvRKsMKLyOtEUmFsMSomGX-WAQ",
+            authDomain: "undangansabrinaadnan.firebaseapp.com",
+            projectId: "undangansabrinaadnan",
+            storageBucket: "undangansabrinaadnan.firebasestorage.app",
+            messagingSenderId: "159904851753",
+            appId: "1:159904851753:web:a15476094bfe49c19bf938",
+            measurementId: "G-0HVZ2SLTMQ"
+        };
 
         const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const dbRef = ref(db, 'rsvp_comments');
+        const db = getFirestore(app);
+        const rsvpCollection = collection(db, 'rsvp_comments');
 
-        // Setup Awal Chart.js
         const ctx = document.getElementById('rsvpChart').getContext('2d');
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
         
@@ -494,44 +532,39 @@ const firebaseConfig = {
             options: { plugins: { legend: { labels: { color: isDark ? '#F4F4F4' : '#333333', font: { family: 'Montserrat' } } } } }
         });
 
-        // Event Listener Form Submit
-        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+        document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = this.querySelector('button');
             btn.innerText = "Mengirim...";
             
-            const data = {
-                name: document.getElementById('rsvp-name').value,
-                message: document.getElementById('rsvp-message').value,
-                status: document.getElementById('rsvp-status').value,
-                timestamp: serverTimestamp()
-            };
-
-            push(dbRef, data).then(() => {
+            try {
+                await addDoc(rsvpCollection, {
+                    name: document.getElementById('rsvp-name').value,
+                    message: document.getElementById('rsvp-message').value,
+                    status: document.getElementById('rsvp-status').value,
+                    timestamp: serverTimestamp()
+                });
+                
                 document.getElementById('rsvp-message').value = "";
                 btn.innerHTML = "<i class='fas fa-check'></i> Terkirim";
                 setTimeout(() => { btn.innerHTML = "<i class='fas fa-paper-plane'></i> Kirim Ucapan"; }, 2000);
-            }).catch((error) => {
-                console.error("Error Firebase:", error);
-                alert("Gagal mengirim pesan. Pastikan Firebase rules kamu allow read/write.");
+            } catch (error) {
+                console.error("Error Firestore:", error);
+                alert("Gagal mengirim pesan. Pastikan Rules Firestore sudah diset.");
                 btn.innerHTML = "Gagal. Coba lagi.";
-            });
+            }
         });
 
-        // Realtime Listener dari Firebase
-        onValue(dbRef, (snapshot) => {
-            const data = snapshot.val();
+        const q = query(rsvpCollection, orderBy("timestamp", "desc"));
+        onSnapshot(q, (snapshot) => {
             const container = document.getElementById('comments-container');
             container.innerHTML = ''; 
 
-            let countHadir = 0, countTidak = 0, countRagu = 0, totalComments = 0;
+            let countHadir = 0, countTidak = 0, countRagu = 0, totalComments = snapshot.size;
 
-            if (data) {
-                const keys = Object.keys(data).reverse(); 
-                totalComments = keys.length;
-
-                keys.forEach(key => {
-                    const row = data[key];
+            if (!snapshot.empty) {
+                snapshot.forEach((doc) => {
+                    const row = doc.data();
                     
                     if(row.status === "Hadir") countHadir++;
                     else if(row.status === "Tidak Hadir") countTidak++;
