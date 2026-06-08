@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding of Sabrina & Adnan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Amiri&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --gold: #D4AF37; --bg-dark: #121212; --text-light: #F4F4F4; }
+        body, html { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; background-color: var(--bg-dark); color: var(--text-light); scroll-behavior: smooth; overflow-x: hidden; }
+        h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--gold); font-weight: normal; text-align: center; }
+        .arabic { font-family: 'Amiri', serif; font-size: 2rem; color: var(--gold); text-align: center; }
+        
+        /* Cover / Welcome Screen */
+        #cover { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(rgba(18,18,18,0.7), rgba(18,18,18,0.9)), url('https://source.unsplash.com/random/1080x1920/?wedding,luxury') center/cover; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; transition: top 1s ease-in-out; }
+        .title-names { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--gold); margin: 10px 0; }
+        .guest-box { margin-top: 30px; padding: 20px; border: 1px solid var(--gold); border-radius: 10px; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
+        .btn-gold { background: var(--gold); color: var(--bg-dark); padding: 12px 30px; border: none; border-radius: 30px; font-weight: bold; font-family: 'Montserrat'; cursor: pointer; margin-top: 20px; transition: 0.3s; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+        .btn-gold:hover { background: #FFF; box-shadow: 0 0 25px rgba(212, 175, 55, 0.8); }
+
+        /* Sections */
+        section { padding: 80px 20px; max-width: 800px; margin: auto; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
+        
+        /* Countdown */
+        .countdown { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .time-box { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); padding: 15px; border-radius: 10px; width: 60px; }
+        .time-box span { font-size: 1.5rem; font-weight: bold; color: var(--gold); }
+        
+        /* Profiles */
+        .profile-container { display: flex; flex-direction: column; gap: 40px; margin-top: 40px; }
+        .profile { text-align: center; }
+        .profile img { width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold); object-fit: cover; }
+        .profile h3 { font-family: 'Great Vibes', cursive; font-size: 2.5rem; margin: 10px 0; }
+        .parents { font-size: 0.9rem; color: #aaa; margin-top: 5px; }
+
+        /* Events */
+        .event-card { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 15px; margin: 20px 0; border: 1px solid rgba(212,175,55,0.3); }
+        .map-preview { width: 100%; height: 200px; background: #333; margin-top: 15px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--gold); }
+
+        /* Pop Up Gift */
+        .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); justify-content: center; align-items: center; }
+        .modal-content { background: var(--bg-dark); padding: 30px; border: 2px solid var(--gold); border-radius: 15px; text-align: center; width: 90%; max-width: 400px; }
+        .atm-card { background: linear-gradient(135deg, #003366, #0055A4); padding: 20px; border-radius: 10px; color: white; margin: 15px 0; text-align: left; }
+
+        /* Form RSVP */
+        input, select, textarea { width: 100%; padding: 10px; margin: 10px 0; background: transparent; border: 1px solid var(--gold); color: white; border-radius: 5px; box-sizing: border-box; }
+        .chart-container { width: 100%; max-width: 300px; margin: 20px auto; }
+        
+        /* Footer */
+        footer { padding: 30px; text-align: center; font-size: 0.8rem; background: #0a0a0a; color: #666; }
+    </style>
+</head>
+<body>
+
+    <div id="cover">
+        <h3>The Wedding Of</h3>
+        <h1 class="title-names">Sabrina & Adnan</h1>
+        
+        <div class="guest-box">
+            <p style="margin:0; font-size: 0.9rem;">Kpd Bapak/Ibu/Saudara/i</p>
+            <h2 id="guest-name" style="margin: 10px 0;">Nama Tamu</h2>
+            <p id="guest-address" style="margin:0; font-size: 0.9rem; color:#aaa;"></p>
+        </div>
+        <button class="btn-gold" onclick="openInvitation()">Buka Undangan</button>
+        <p style="position: absolute; bottom: 20px; font-size: 0.8rem;">Developed By Ahmad Fahril</p>
+    </div>
+
+    <section id="home">
+        <h2>Pernikahan Kami</h2>
+        <img src="https://source.unsplash.com/random/800x400/?wedding,couple" alt="Prewed" style="width:100%; border-radius:10px; border: 2px solid var(--gold); margin: 20px 0;">
+        <p style="font-weight: 600; font-size: 1.2rem;">Sabtu, 12 September 2026</p>
+        
+        <div class="countdown">
+            <div class="time-box"><span id="hari">00</span><br><small>Hari</small></div>
+            <div class="time-box"><span id="jam">00</span><br><small>Jam</small></div>
+            <div class="time-box"><span id="menit">00</span><br><small>Menit</small></div>
+            <div class="time-box"><span id="detik">00</span><br><small>Detik</small></div>
+        </div>
+
+        <p style="margin-top: 40px; font-style: italic; color: #ccc;">"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri..." <br><br> (QS. Ar-Rum: 21)</p>
+    </section>
+
+    <section id="bride">
+        <div class="arabic">ٱلسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ ٱللَّٰهِ وَبَرَكَاتُهُ</div>
+        <p style="margin-top: 20px;">Dengan Memohon Rahmat dan Ridho dari Allah Subhanahu Wa Ta'ala. Kami Bermaksud Menyelenggarakan Syukuran Pernikahan Putra Putri Kami:</p>
+
+        <div class="profile-container">
+            <div class="profile">
+                <img src="https://source.unsplash.com/random/200x200/?hijab,woman" alt="Sabrina">
+                <h3>Sabrina Aulia Rahma Hidayanto</h3>
+                <p>📱 IG | 💬 WA</p>
+                <p class="parents">Anak Pertama dari Bapak Alm Fuad Ngalim Hidayanto & Ibu Siti Nurul Hidayah</p>
+            </div>
+            <h2 style="font-family:'Great Vibes'; font-size:3rem;">&</h2>
+            <div class="profile">
+                <img src="https://source.unsplash.com/random/200x200/?man,suit" alt="Adnan">
+                <h3>Adnan Abdul Karim</h3>
+                <p>📱 IG | 💬 WA</p>
+                <p class="parents">Anak Ke Empat dari Bapak Sadino Tomo Raharjo & Ibu Mulyani</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="event">
+        <h2>Insyaallah Acara akan dilaksanakan:</h2>
+        <h1 style="font-size: 4rem; margin: 10px 0;">💍</h1> <div class="event-card">
+            <h3>Akad Nikah</h3>
+            <p>🗓️ Sabtu, 12 September 2026<br>🕗 08:00 WIB - Selesai</p>
+            <p>📍 <strong>Gedung Pertemuan A</strong></p>
+        </div>
+
+        <div class="event-card">
+            <h3>Wedding Reception</h3>
+            <p>🗓️ Sabtu, 12 September 2026<br>🕚 11:00 WIB - Selesai</p>
+            <p>📍 <strong>Gedung Pertemuan B</strong></p>
+        </div>
+
+        <div class="map-preview">
+            [ Preview Google Maps ]<br>Klik untuk Buka Arahan
+        </div>
+    </section>
+
+    <section id="lovestory">
+        <h2>Love Story</h2>
+        <div style="text-align: left; border-left: 2px solid var(--gold); padding-left: 20px;">
+            <h4 style="color:var(--gold); margin-bottom: 5px;">Perkenalan</h4>
+            <p style="margin-top:0; font-size:0.9rem;">Berawal dari pertemuan tak terduga...</p>
+            
+            <h4 style="color:var(--gold); margin-bottom: 5px;">Perjodohan</h4>
+            <p style="margin-top:0; font-size:0.9rem;">Keluarga saling bertemu untuk silaturahmi...</p>
+            
+            <h4 style="color:var(--gold); margin-bottom: 5px;">Pernikahan</h4>
+            <p style="margin-top:0; font-size:0.9rem;">Mengikat janji suci untuk bersama selamanya.</p>
+        </div>
+
+        <h3 style="margin-top: 50px;">Adab Menghadiri Walimah</h3>
+        <ul style="text-align: left; font-size: 0.9rem; color: #ccc;">
+            <li>Memenuhi undangan (HR. Bukhari 5173)</li>
+            <li>Mendoakan keberkahan (HR. Muslim 82)</li>
+            <li>Menutup aurat & berpakaian sopan (QS. Al Ahzab 59)</li>
+            <li>Tidak berlebih-lebihan (HR. Tirmidzi 1091)</li>
+        </ul>
+    </section>
+
+    <section id="gift">
+        <h2>Wedding Gift</h2>
+        <p>Doa Restu Anda Merupakan Karunia yang Sangat Berarti Bagi Kami. Dan Jika Memberi Adalah Ungkapan Tanda Kasih. Anda dapat Memberi Kado Secara Cashless.</p>
+        <button class="btn-gold" onclick="openGift()">Kirim Amplop</button>
+    </section>
+
+    <div id="giftModal" class="modal">
+        <div class="modal-content">
+            <h2>Kado Digital</h2>
+            <div class="atm-card">
+                <h3 style="margin:0; color:white;">BCA</h3>
+                <p style="font-size: 1.2rem; letter-spacing: 2px;">8723 1122 3344</p>
+                <p style="margin:0;">A.N Sabrina Aulia R.H</p>
+            </div>
+            <div class="atm-card">
+                <h3 style="margin:0; color:white;">BCA</h3>
+                <p style="font-size: 1.2rem; letter-spacing: 2px;">8723 9988 7766</p>
+                <p style="margin:0;">A.N Adnan Abdul Karim</p>
+            </div>
+            <button class="btn-gold" onclick="closeGift()" style="margin-top: 10px;">Tutup</button>
+        </div>
+    </div>
+
+    <section id="rsvp">
+        <h2>Ucapan & Doa</h2>
+        <p>Tuliskan Ucapan dan Doa terbaik mu saat ini bagi kedua mempelai.</p>
+        
+        <form style="text-align: left;">
+            <input type="text" id="rsvp-name" readonly style="background: rgba(255,255,255,0.1);">
+            <textarea rows="4" placeholder="Tulis doa dan ucapan..."></textarea>
+            <select>
+                <option value="hadir">Hadir</option>
+                <option value="tidak">Tidak Hadir</option>
+                <option value="ragu">Ragu-ragu</option>
+            </select>
+            <button class="btn-gold" style="width: 100%;">Kirim Ucapan</button>
+        </form>
+
+        <h3 style="margin-top: 40px;">Konfirmasi Kehadiran</h3>
+        <div class="chart-container">
+            <canvas id="rsvpChart"></canvas>
+        </div>
+        <p>Jumlah Komentar: <strong>0</strong></p>
+    </section>
+
+    <section id="closing" style="border:none;">
+        <div class="arabic">وَالسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ ٱللَّٰهِ وَبَرَكَاتُهُ</div>
+        <br>
+        <img src="https://source.unsplash.com/random/800x500/?wedding,couple,sunset" alt="Prewed Penutup" style="width:100%; border-radius:10px; border: 2px solid var(--gold); margin: 20px 0;">
+        <h2 style="font-family:'Great Vibes'; font-size: 3rem; margin:10px 0;">Sabrina & Adnan</h2>
+        <p>Sabtu, 12 September 2026</p>
+    </section>
+
+    <footer>
+        <p>📱 IG | 💬 WA | 📧 Email</p>
+        <p>Developed by Ahmad Fahril v.1.26.08.01<br>Copy Right AMDF 2026</p>
+    </footer>
+
+    <script>
+        // 1. Parsing URL Parameter (?to=nama%alamat)
+        const urlParams = new URLSearchParams(window.location.search);
+        const toParam = urlParams.get('to');
+        
+        let guestName = "Tamu Undangan";
+        let guestAddress = "";
+
+        if(toParam) {
+            // Memisahkan parameter berdasarkan karakter '%'
+            const parts = toParam.split('%');
+            if(parts[0]) guestName = parts[0].replace(/_/g, ' '); // Ganti underscore jadi spasi
+            if(parts[1]) guestAddress = "di " + parts[1].replace(/_/g, ' ');
+        }
+
+        // Terapkan ke UI
+        document.getElementById('guest-name').innerText = guestName;
+        document.getElementById('guest-address').innerText = guestAddress;
+        // Kunci username form RSVP sesuai URL
+        document.getElementById('rsvp-name').value = guestName;
+
+        // 2. Logika Buka Undangan
+        function openInvitation() {
+            document.getElementById('cover').style.top = "-100vh"; // Animasi slide up
+            document.body.style.overflowY = "auto"; // Munculkan scrollbar
+        }
+
+        // 3. Logika Countdown (Target: 12 Sept 2026 08:00)
+        const countDownDate = new Date("Sep 12, 2026 08:00:00").getTime();
+        setInterval(function() {
+            let now = new Date().getTime();
+            let distance = countDownDate - now;
+            document.getElementById("hari").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById("jam").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("menit").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("detik").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+        }, 1000);
+
+        // 4. Modal Gift Popup
+        function openGift() { document.getElementById('giftModal').style.display = "flex"; }
+        function closeGift() { document.getElementById('giftModal').style.display = "none"; }
+
+        // 5. Inisialisasi Chart.js (Dummy Data awal)
+        const ctx = document.getElementById('rsvpChart').getContext('2d');
+        const rsvpChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Hadir', 'Tidak Hadir', 'Ragu'],
+                datasets: [{
+                    data: [75, 15, 10], // Persentase Dummy
+                    backgroundColor: ['#D4AF37', '#888888', '#444444'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { labels: { color: 'white' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
