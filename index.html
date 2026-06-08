@@ -1,49 +1,122 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wedding of Sabrina & Adnan</title>
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Amiri&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome Icons (IG, WA, Email) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        :root { --gold: #D4AF37; --bg-dark: #121212; --text-light: #F4F4F4; }
-        body, html { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; background-color: var(--bg-dark); color: var(--text-light); scroll-behavior: smooth; overflow-x: hidden; }
+        /* ==============================
+           TEMA TERANG & GELAP (CSS VARIABLES)
+           ============================== */
+        :root { 
+            --gold: #D4AF37; 
+            --gold-hover: #AA7C11;
+            /* Tema Terang Default */
+            --bg-color: #FDFBF7; 
+            --text-color: #333333; 
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --border-color: rgba(212, 175, 55, 0.4);
+            --cover-gradient: linear-gradient(rgba(253, 251, 247, 0.7), rgba(253, 251, 247, 0.95));
+            --input-bg: rgba(0, 0, 0, 0.05);
+            --text-muted: #666666;
+            --modal-bg: #FFFFFF;
+        }
+
+        [data-theme="dark"] {
+            /* Tema Gelap */
+            --bg-color: #121212; 
+            --text-color: #F4F4F4; 
+            --card-bg: rgba(0, 0, 0, 0.65);
+            --border-color: rgba(212, 175, 55, 0.2);
+            --cover-gradient: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.95));
+            --input-bg: rgba(255, 255, 255, 0.1);
+            --text-muted: #CCCCCC;
+            --modal-bg: #1A1A1A;
+        }
+
+        body, html { 
+            margin: 0; padding: 0; 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            scroll-behavior: smooth; 
+            overflow-x: hidden; 
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
         h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--gold); font-weight: normal; text-align: center; }
         .arabic { font-family: 'Amiri', serif; font-size: clamp(1.5rem, 5vw, 2.5rem); color: var(--gold); text-align: center; }
         
-        /* Animasi Background Bunga Parallax */
-        #floral-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; overflow: hidden; opacity: 0.6; }
-        .flower-item { position: absolute; background-size: contain; background-repeat: no-repeat; opacity: 0.7; transition: transform 0.1s ease-out; }
-        /* Placeholder Bunga: Ganti URL dengan gambar bunga PNG tanpa background dari GitHub kamu */
-        .flower-1 { width: 150px; height: 150px; background-image: url('https://cdn-icons-png.flaticon.com/512/1087/1087436.png'); top: -20px; left: -20px; }
-        .flower-2 { width: 200px; height: 200px; background-image: url('https://cdn-icons-png.flaticon.com/512/1087/1087436.png'); bottom: 10%; right: -30px; transform: scaleX(-1); }
-        .flower-3 { width: 100px; height: 100px; background-image: url('https://cdn-icons-png.flaticon.com/512/1087/1087436.png'); top: 40%; left: 10%; }
-        .flower-4 { width: 250px; height: 250px; background-image: url('https://cdn-icons-png.flaticon.com/512/1087/1087436.png'); top: 20%; right: 10%; }
+        /* ==============================
+           ANIMASI BUNGA BERGERAK (RESPONSIVE)
+           ============================== */
+        #floral-bg { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            z-index: -1; pointer-events: none; overflow: hidden; opacity: 0.8; 
+        }
+        .flower-item { 
+            position: absolute; background-size: contain; background-repeat: no-repeat; 
+            opacity: 0.6; animation: floatUp 20s infinite linear;
+        }
+        /* Mawar */
+        .flower-1 { width: 150px; height: 150px; background-image: url('https://cdn-icons-png.flaticon.com/512/8208/8208462.png'); left: 5%; bottom: -150px; animation-duration: 25s; }
+        /* Melati / Bunga Putih */
+        .flower-2 { width: 120px; height: 120px; background-image: url('https://cdn-icons-png.flaticon.com/512/6198/6198083.png'); right: 10%; bottom: -150px; animation-duration: 20s; animation-delay: 5s; transform: scaleX(-1); }
+        /* Bunga Sakura / Pink Cerah */
+        .flower-3 { width: 100px; height: 100px; background-image: url('https://cdn-icons-png.flaticon.com/512/11105/11105835.png'); left: 40%; bottom: -150px; animation-duration: 18s; animation-delay: 2s; }
+        /* Daun Tropis / Elegan */
+        .flower-4 { width: 200px; height: 200px; background-image: url('https://cdn-icons-png.flaticon.com/512/1087/1087436.png'); right: -20px; bottom: -200px; animation-duration: 30s; animation-delay: 0s; }
 
-        /* Cover Screen */
-        #cover { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(rgba(18,18,18,0.7), rgba(18,18,18,0.9)), url('https://source.unsplash.com/random/1080x1920/?wedding,luxury') center/cover; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; transition: top 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
-        .title-names { font-family: 'Great Vibes', cursive; font-size: clamp(3rem, 8vw, 5rem); color: var(--gold); margin: 10px 0; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
-        .guest-box { margin-top: 30px; padding: 20px 40px; border: 1px solid var(--gold); border-radius: 10px; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* TOGGLE BUTTON */
+        .theme-toggle-btn {
+            position: fixed; bottom: 20px; right: 20px; z-index: 999;
+            background: var(--gold); color: #fff; border: none;
+            width: 50px; height: 50px; border-radius: 50%;
+            font-size: 1.5rem; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
+            transition: transform 0.3s ease;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .theme-toggle-btn:hover { transform: scale(1.1); }
+
+        /* ==============================
+           LAYOUT & KOMPONEN
+           ============================== */
+        #cover { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
+            /* Menggunakan Path Sesuai Request */
+            background: var(--cover-gradient), url('assets/img/cover-utama.webp') center/cover; 
+            z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; 
+            transition: top 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+        }
+        .title-names { font-family: 'Great Vibes', cursive; font-size: clamp(3rem, 8vw, 5rem); color: var(--gold); margin: 10px 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.2); }
+        [data-theme="dark"] .title-names { text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
+        
+        .guest-box { margin-top: 30px; padding: 20px 40px; border: 1px solid var(--gold); border-radius: 10px; background: var(--card-bg); backdrop-filter: blur(8px); color: var(--text-color); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
         /* Buttons */
-        .btn-gold { background: linear-gradient(135deg, #D4AF37, #AA7C11); color: var(--bg-dark); padding: 12px 35px; border: none; border-radius: 30px; font-weight: bold; font-family: 'Montserrat'; cursor: pointer; margin-top: 20px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+        .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-hover)); color: #fff; padding: 12px 35px; border: none; border-radius: 30px; font-weight: bold; font-family: 'Montserrat'; cursor: pointer; margin-top: 20px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); text-transform: uppercase; letter-spacing: 1px; }
         .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.8); }
 
-        /* Sections Layout */
         section { padding: 80px 20px; max-width: 900px; margin: auto; text-align: center; position: relative; z-index: 1; }
         
         /* Countdown */
         .countdown { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
-        .time-box { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); padding: 15px; border-radius: 10px; width: 65px; backdrop-filter: blur(5px); }
+        .time-box { background: var(--card-bg); border: 1px solid var(--gold); padding: 15px; border-radius: 10px; width: 65px; backdrop-filter: blur(5px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .time-box span { font-size: 1.8rem; font-weight: bold; color: var(--gold); }
         
         /* Profiles */
@@ -51,46 +124,47 @@
         @media (min-width: 768px) { .profile-container { flex-direction: row; justify-content: space-around; } }
         .profile { text-align: center; max-width: 300px; }
         .profile img { width: 180px; height: 180px; border-radius: 50%; border: 4px solid var(--gold); object-fit: cover; box-shadow: 0 0 20px rgba(212,175,55,0.3); }
-        .profile h3 { font-family: 'Great Vibes', cursive; font-size: clamp(2rem, 4vw, 2.8rem); margin: 15px 0 5px; }
+        .profile h3 { font-family: 'Great Vibes', cursive; font-size: clamp(2rem, 4vw, 2.8rem); margin: 15px 0 5px; color: var(--text-color); }
         .social-icons a { color: var(--gold); font-size: 1.5rem; margin: 0 10px; text-decoration: none; transition: 0.3s; }
-        .social-icons a:hover { color: #FFF; transform: scale(1.1); }
-        .parents { font-size: 0.9rem; color: #ccc; margin-top: 10px; line-height: 1.5; }
+        .social-icons a:hover { transform: scale(1.1); }
+        .parents { font-size: 0.9rem; color: var(--text-muted); margin-top: 10px; line-height: 1.5; }
 
         /* Events */
-        .event-card { background: rgba(0,0,0,0.5); padding: 30px; border-radius: 15px; margin: 20px auto; border: 1px solid rgba(212,175,55,0.3); backdrop-filter: blur(5px); max-width: 500px; }
-        .map-preview { width: 100%; max-width: 500px; height: 250px; background: #222; margin: 20px auto 0; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--gold); overflow: hidden; }
+        .event-card { background: var(--card-bg); padding: 30px; border-radius: 15px; margin: 20px auto; border: 1px solid var(--border-color); backdrop-filter: blur(5px); max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); color: var(--text-color); }
+        .map-preview { width: 100%; max-width: 500px; height: 250px; background: #eee; margin: 20px auto 0; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--gold); overflow: hidden; }
         
         /* Modal Gift */
         .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal-content { background: #1A1A1A; padding: 30px; border: 1px solid var(--gold); border-radius: 15px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .modal-content { background: var(--modal-bg); color: var(--text-color); padding: 30px; border: 1px solid var(--gold); border-radius: 15px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .atm-card { background: linear-gradient(135deg, #003366, #0055A4); padding: 20px; border-radius: 12px; color: white; margin: 15px 0; text-align: left; position: relative; overflow: hidden; }
         .atm-card::after { content: ''; position: absolute; right: -20px; bottom: -20px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; }
 
         /* RSVP Form & Comments */
         .form-group { text-align: left; margin-bottom: 15px; }
-        input, select, textarea { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--gold); color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        input, select, textarea { width: 100%; padding: 12px; background: var(--input-bg); border: 1px solid var(--gold); color: var(--text-color); border-radius: 8px; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
         input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 10px rgba(212,175,55,0.5); }
         
         #comments-container { margin-top: 30px; max-height: 400px; overflow-y: auto; text-align: left; padding-right: 10px; }
-        .comment-box { background: rgba(255,255,255,0.05); border-left: 3px solid var(--gold); padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        .comment-box { background: var(--card-bg); border-left: 3px solid var(--gold); padding: 15px; margin-bottom: 10px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .comment-box strong { color: var(--gold); }
-        .comment-box .badge { font-size: 0.7rem; padding: 3px 8px; border-radius: 10px; background: #333; margin-left: 10px; vertical-align: middle; }
+        .comment-box .badge { font-size: 0.7rem; padding: 3px 8px; border-radius: 10px; background: #333; margin-left: 10px; vertical-align: middle; color: #fff;}
         .chart-container { width: 100%; max-width: 350px; margin: 30px auto; }
 
         /* Footer */
-        footer { padding: 40px 20px; text-align: center; font-size: 0.85rem; background: #080808; border-top: 1px solid rgba(212,175,55,0.2); }
-        .footer-icons a { color: var(--gold); font-size: 1.5rem; margin: 0 15px; text-decoration: none; transition: 0.3s; }
-        .footer-icons a:hover { color: #FFF; transform: translateY(-5px); display: inline-block; }
+        footer { padding: 40px 20px; text-align: center; font-size: 0.85rem; background: var(--card-bg); border-top: 1px solid var(--border-color); color: var(--text-muted); }
         
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #121212; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
         ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <!-- Animasi Background Parallax -->
+    <button class="theme-toggle-btn" id="theme-btn" onclick="toggleTheme()" title="Ubah Tema Cerah/Gelap">
+        <i class="fas fa-moon" id="theme-icon"></i>
+    </button>
+
     <div id="floral-bg">
         <div class="flower-item flower-1" data-speed="3"></div>
         <div class="flower-item flower-2" data-speed="-4"></div>
@@ -98,7 +172,6 @@
         <div class="flower-item flower-4" data-speed="-2"></div>
     </div>
 
-    <!-- 1. WELCOME SCREEN -->
     <div id="cover">
         <h3>The Wedding Of</h3>
         <h1 class="title-names">Sabrina & Adnan</h1>
@@ -106,16 +179,15 @@
         <div class="guest-box">
             <p style="margin:0; font-size: 0.9rem; letter-spacing: 1px;">Kpd Bapak/Ibu/Saudara/i</p>
             <h2 id="guest-name" style="margin: 10px 0; font-family: 'Montserrat';">Nama Tamu</h2>
-            <p id="guest-address" style="margin:0; font-size: 0.9rem; color:#aaa;"></p>
+            <p id="guest-address" style="margin:0; font-size: 0.9rem; color: var(--text-muted);"></p>
         </div>
         <button class="btn-gold" onclick="openInvitation()"><i class="fas fa-envelope-open-text"></i> Buka Undangan</button>
-        <p style="position: absolute; bottom: 20px; font-size: 0.8rem; letter-spacing: 1px;">DEVELOPED BY AHMAD FAHRIL</p>
+        <p style="position: absolute; bottom: 20px; font-size: 0.8rem; letter-spacing: 1px; color: var(--text-color);">DEVELOPED BY AHMAD FAHRIL</p>
     </div>
 
-    <!-- 2. HOME -->
     <section id="home">
         <h2>Pernikahan Kami</h2>
-        <img src="https://source.unsplash.com/random/1000x500/?wedding,couple" alt="Prewed" style="width:100%; border-radius:15px; border: 2px solid var(--gold); margin: 20px 0; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+        <img src="assets/img/foto-berdua-home.webp" alt="Prewed" style="width:100%; border-radius:15px; border: 2px solid var(--gold); margin: 20px 0; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">
         <p style="font-weight: 600; font-size: 1.2rem; letter-spacing: 2px;">SABTU, 12 SEPTEMBER 2026</p>
         
         <div class="countdown">
@@ -125,17 +197,16 @@
             <div class="time-box"><span id="detik">00</span><br><small>Detik</small></div>
         </div>
 
-        <p style="margin-top: 50px; font-style: italic; color: #ccc; line-height: 1.8;">"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya..." <br><br> (QS. Ar-Rum: 21)</p>
+        <p style="margin-top: 50px; font-style: italic; color: var(--text-muted); line-height: 1.8;">"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya..." <br><br> (QS. Ar-Rum: 21)</p>
     </section>
 
-    <!-- 3. BRIDE -->
     <section id="bride">
         <div class="arabic">ٱلسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ ٱللَّٰهِ وَبَرَكَاتُهُ</div>
         <p style="margin-top: 20px; line-height: 1.6;">Dengan Memohon Rahmat dan Ridho dari Allah Subhanahu Wa Ta'ala. Kami Bermaksud Menyelenggarakan Syukuran Pernikahan Putra Putri Kami:</p>
 
         <div class="profile-container">
             <div class="profile">
-                <img src="https://source.unsplash.com/random/300x300/?hijab,wedding" alt="Sabrina">
+                <img src="assets/img/foto-sabrina.webp" alt="Sabrina">
                 <h3>Sabrina Aulia Rahma Hidayanto</h3>
                 <div class="social-icons">
                     <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -147,7 +218,7 @@
             <h2 style="font-family:'Great Vibes'; font-size:4rem; margin:0;">&</h2>
             
             <div class="profile">
-                <img src="https://source.unsplash.com/random/300x300/?groom,suit" alt="Adnan">
+                <img src="assets/img/foto-adnan.webp" alt="Adnan">
                 <h3>Adnan Abdul Karim</h3>
                 <div class="social-icons">
                     <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -158,10 +229,8 @@
         </div>
     </section>
 
-    <!-- 4. EVENT -->
     <section id="event">
         <h2>Insyaallah Acara akan dilaksanakan:</h2>
-        <!-- Ganti src img ini dengan aset cincin dari GitHub kamu -->
         <img src="https://cdn-icons-png.flaticon.com/512/833/833410.png" alt="Cincin" style="width: 80px; margin: 20px 0; filter: drop-shadow(0 0 10px rgba(212,175,55,0.8));"> 
 
         <div class="event-card">
@@ -183,25 +252,24 @@
         </div>
     </section>
 
-    <!-- 5. LOVE STORY & ADAB -->
     <section id="lovestory">
         <h2>Love Story</h2>
         <div style="text-align: left; border-left: 2px solid var(--gold); padding-left: 25px; position: relative; margin-top: 30px;">
             <div style="position: absolute; left: -8px; top: 0; width: 14px; height: 14px; background: var(--gold); border-radius: 50%;"></div>
             <h4 style="color:var(--gold); margin: 0 0 5px 0; font-size: 1.2rem;">Perkenalan</h4>
-            <p style="margin-top:0; font-size:0.95rem; color:#ccc; margin-bottom: 25px;">Berawal dari pertemuan tak terduga, saling mengenal karakter dan visi misi kehidupan.</p>
+            <p style="margin-top:0; font-size:0.95rem; color:var(--text-muted); margin-bottom: 25px;">Berawal dari pertemuan tak terduga, saling mengenal karakter dan visi misi kehidupan.</p>
             
             <div style="position: absolute; left: -8px; top: 110px; width: 14px; height: 14px; background: var(--gold); border-radius: 50%;"></div>
             <h4 style="color:var(--gold); margin: 0 0 5px 0; font-size: 1.2rem;">Perjodohan</h4>
-            <p style="margin-top:0; font-size:0.95rem; color:#ccc; margin-bottom: 25px;">Keluarga saling bertemu untuk silaturahmi dan menyatukan niat baik kami berdua.</p>
+            <p style="margin-top:0; font-size:0.95rem; color:var(--text-muted); margin-bottom: 25px;">Keluarga saling bertemu untuk silaturahmi dan menyatukan niat baik kami berdua.</p>
             
             <div style="position: absolute; left: -8px; top: 220px; width: 14px; height: 14px; background: var(--gold); border-radius: 50%;"></div>
             <h4 style="color:var(--gold); margin: 0 0 5px 0; font-size: 1.2rem;">Pernikahan</h4>
-            <p style="margin-top:0; font-size:0.95rem; color:#ccc;">Hari bahagia dimana kami mengikat janji suci di hadapan Allah dan saksi untuk bersama selamanya.</p>
+            <p style="margin-top:0; font-size:0.95rem; color:var(--text-muted);">Hari bahagia dimana kami mengikat janji suci di hadapan Allah dan saksi untuk bersama selamanya.</p>
         </div>
 
         <h3 style="margin-top: 60px;">Adab Menghadiri Walimah</h3>
-        <ul style="text-align: left; font-size: 0.95rem; color: #ccc; line-height: 1.8;">
+        <ul style="text-align: left; font-size: 0.95rem; color: var(--text-muted); line-height: 1.8;">
             <li><i class="fas fa-check" style="color:var(--gold);"></i> Memenuhi undangan (HR. Bukhari 5173)</li>
             <li><i class="fas fa-check" style="color:var(--gold);"></i> Mendoakan keberkahan untuk mempelai (HR. Muslim 82)</li>
             <li><i class="fas fa-check" style="color:var(--gold);"></i> Menutup aurat & berpakaian sopan (QS. Al Ahzab 59)</li>
@@ -209,14 +277,12 @@
         </ul>
     </section>
 
-    <!-- 6. WEDDING GIFT -->
     <section id="gift">
         <h2>Wedding Gift</h2>
         <p style="line-height: 1.6;">Doa Restu Anda Merupakan Karunia yang Sangat Berarti Bagi Kami. Dan Jika Memberi Adalah Ungkapan Tanda Kasih. Anda dapat Memberi Kado Secara Cashless.</p>
         <button class="btn-gold" onclick="openGift()"><i class="fas fa-gift"></i> Kirim Amplop</button>
     </section>
 
-    <!-- Modal Gift Pop Up -->
     <div id="giftModal" class="modal">
         <div class="modal-content">
             <h2 style="margin-top: 0;">Kado Digital</h2>
@@ -241,16 +307,14 @@
         </div>
     </div>
 
-    <!-- 7. RSVP & UCAPAN (TERHUBUNG FIREBASE) -->
     <section id="rsvp">
         <h2>Ucapan & Doa</h2>
         <p>Tuliskan Ucapan dan Doa terbaik mu saat ini bagi kedua mempelai.</p>
         
-        <form id="rsvpForm" style="text-align: left; background: rgba(0,0,0,0.4); padding: 25px; border-radius: 10px; border: 1px solid rgba(212,175,55,0.2);">
+        <form id="rsvpForm" style="text-align: left; background: var(--card-bg); padding: 25px; border-radius: 10px; border: 1px solid var(--border-color); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
             <div class="form-group">
                 <label>Nama Anda</label>
-                <!-- Dibuat readonly agar menggunakan username tamu di URL -->
-                <input type="text" id="rsvp-name" readonly style="background: rgba(255,255,255,0.1); cursor: not-allowed;">
+                <input type="text" id="rsvp-name" readonly style="background: rgba(150,150,150,0.2); cursor: not-allowed;">
             </div>
             <div class="form-group">
                 <label>Pesan & Doa</label>
@@ -269,8 +333,7 @@
 
         <h3 style="margin-top: 50px;">Daftar Ucapan (<span id="count-comments">0</span>)</h3>
         <div id="comments-container">
-            <!-- Komentar dari Firebase akan muncul di sini otomatis -->
-            <p style="text-align:center; color:#666;">Memuat pesan...</p>
+            <p style="text-align:center; color: var(--text-muted);">Memuat pesan...</p>
         </div>
 
         <h3 style="margin-top: 50px;">Statistik Kehadiran</h3>
@@ -279,16 +342,14 @@
         </div>
     </section>
 
-    <!-- 8. PENUTUP -->
     <section id="closing" style="border:none;">
         <div class="arabic">وَالسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ ٱللَّٰهِ وَبَرَكَاتُهُ</div>
         <br>
-        <img src="https://source.unsplash.com/random/1000x600/?wedding,sunset" alt="Prewed Penutup" style="width:100%; border-radius:15px; border: 2px solid var(--gold); margin: 20px 0; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+        <img src="assets/img/foto-penutup.webp" alt="Prewed Penutup" style="width:100%; border-radius:15px; border: 2px solid var(--gold); margin: 20px 0; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">
         <h2 style="font-family:'Great Vibes'; font-size: clamp(3rem, 6vw, 4.5rem); margin:10px 0;">Sabrina & Adnan</h2>
         <p style="letter-spacing: 2px;">SABTU, 12 SEPTEMBER 2026</p>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <div class="footer-icons" style="margin-bottom: 20px;">
             <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -298,9 +359,34 @@
         <p>Developed by Ahmad Fahril v.1.26.08.01<br>Copy Right AMDF 2026</p>
     </footer>
 
-    <!-- SCRIPT UTAMA (UI LOGIC) -->
     <script>
-        // --- 1. PARSING URL PARAMETER ---
+        // --- 1. TOGGLE TEMA (TERANG/GELAP) ---
+        function toggleTheme() {
+            const htmlTag = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (htmlTag.getAttribute('data-theme') === 'light') {
+                htmlTag.setAttribute('data-theme', 'dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('weddingTheme', 'dark');
+            } else {
+                htmlTag.setAttribute('data-theme', 'light');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('weddingTheme', 'light');
+            }
+            updateChartColor(); // Update warna teks di ChartJS
+        }
+
+        // Cek Preferensi Tema saat Halaman Dimuat
+        window.onload = () => {
+            const savedTheme = localStorage.getItem('weddingTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            if(savedTheme === 'dark') {
+                document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
+            }
+        };
+
+        // --- 2. PARSING URL PARAMETER ---
         const urlParams = new URLSearchParams(window.location.search);
         const toParam = urlParams.get('to');
         let guestName = "Tamu Undangan";
@@ -313,9 +399,9 @@
         }
         document.getElementById('guest-name').innerText = guestName;
         document.getElementById('guest-address').innerText = guestAddress;
-        document.getElementById('rsvp-name').value = guestName; // Set username rsvp
+        document.getElementById('rsvp-name').value = guestName; 
 
-        // --- 2. LOGIKA UI (Cover, Countdown, Gift) ---
+        // --- 3. LOGIKA UI (Cover, Countdown, Gift) ---
         function openInvitation() {
             document.getElementById('cover').style.top = "-100vh";
             document.body.style.overflowY = "auto";
@@ -340,9 +426,9 @@
             alert("Nomor rekening disalin: " + text);
         }
 
-        // --- 3. ANIMASI BACKGROUND PARALLAX ---
+        // --- 4. ANIMASI BACKGROUND PARALLAX TAMBAHAN PADA MOUSEMOVE ---
         document.addEventListener("mousemove", parallaxEffect);
-        document.addEventListener("touchmove", parallaxEffect); // Support Touchscreen
+        document.addEventListener("touchmove", parallaxEffect); 
         
         function parallaxEffect(e) {
             let x = e.clientX || (e.touches && e.touches[0].clientX);
@@ -353,13 +439,21 @@
             document.querySelectorAll('.flower-item').forEach(flower => {
                 let speed = flower.getAttribute('data-speed');
                 let xPos = (window.innerWidth / 2 - x) * speed / 100;
-                let yPos = (window.innerHeight / 2 - y) * speed / 100;
-                flower.style.transform = `translate(${xPos}px, ${yPos}px)`;
+                // Kita hanya geser sedikit X nya saja agar tidak merusak animasi CSS floatUp bawaannya
+                flower.style.marginLeft = `${xPos}px`;
             });
+        }
+        
+        // --- 5. UPDATE CHARTJS TEXT COLOR ---
+        function updateChartColor() {
+            if(window.rsvpChart) {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                window.rsvpChart.options.plugins.legend.labels.color = isDark ? '#F4F4F4' : '#333333';
+                window.rsvpChart.update();
+            }
         }
     </script>
 
-    <!-- SCRIPT FIREBASE V10 (MODULAR) & CHART.JS -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, push, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
@@ -367,15 +461,16 @@
         // ==========================================
         // WAJIB: MASUKKAN CONFIG FIREBASE KAMU DI SINI
         // ==========================================
-        const firebaseConfig = {
-            apiKey: "API_KEY_KAMU",
-            authDomain: "PROJECT_KAMU.firebaseapp.com",
-            databaseURL: "https://PROJECT_KAMU-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "PROJECT_KAMU",
-            storageBucket: "PROJECT_KAMU.appspot.com",
-            messagingSenderId: "SENDER_ID_KAMU",
-            appId: "APP_ID_KAMU"
-        };
+const firebaseConfig = {
+  apiKey: "AIzaSyBKYztNuwvRKsMKLyOtEUmFsMSomGX-WAQ",
+  authDomain: "undangansabrinaadnan.firebaseapp.com",
+  projectId: "undangansabrinaadnan",
+  storageBucket: "undangansabrinaadnan.firebasestorage.app",
+  messagingSenderId: "159904851753",
+  appId: "1:159904851753:web:a15476094bfe49c19bf938",
+  measurementId: "G-0HVZ2SLTMQ"
+};
+
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
@@ -383,18 +478,20 @@
 
         // Setup Awal Chart.js
         const ctx = document.getElementById('rsvpChart').getContext('2d');
-        let rsvpChart = new Chart(ctx, {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        
+        window.rsvpChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ['Hadir', 'Tidak Hadir', 'Ragu-ragu'],
                 datasets: [{
                     data: [0, 0, 0],
-                    backgroundColor: ['#D4AF37', '#555555', '#222222'],
+                    backgroundColor: ['#D4AF37', '#dc3545', '#ffc107'],
                     borderWidth: 0,
                     hoverOffset: 4
                 }]
             },
-            options: { plugins: { legend: { labels: { color: 'white', font: { family: 'Montserrat' } } } } }
+            options: { plugins: { legend: { labels: { color: isDark ? '#F4F4F4' : '#333333', font: { family: 'Montserrat' } } } } }
         });
 
         // Event Listener Form Submit
@@ -430,40 +527,34 @@
             let countHadir = 0, countTidak = 0, countRagu = 0, totalComments = 0;
 
             if (data) {
-                // Balik urutan dari terbaru ke terlama
                 const keys = Object.keys(data).reverse(); 
                 totalComments = keys.length;
 
                 keys.forEach(key => {
                     const row = data[key];
                     
-                    // Hitung Chart
                     if(row.status === "Hadir") countHadir++;
                     else if(row.status === "Tidak Hadir") countTidak++;
                     else countRagu++;
 
-                    // Warna Badge Status
                     let badgeColor = row.status === "Hadir" ? "#28a745" : (row.status === "Tidak Hadir" ? "#dc3545" : "#ffc107");
                     let fontColor = row.status === "Ragu-ragu" ? "black" : "white";
 
-                    // Render UI Komentar
                     container.innerHTML += `
                         <div class="comment-box">
                             <strong><i class="fas fa-user-circle"></i> ${row.name}</strong> 
                             <span class="badge" style="background:${badgeColor}; color:${fontColor};">${row.status}</span>
-                            <p style="margin: 10px 0 0 0; font-size: 0.95rem; color: #ddd;">"${row.message}"</p>
+                            <p style="margin: 10px 0 0 0; font-size: 0.95rem; color: var(--text-muted);">"${row.message}"</p>
                         </div>
                     `;
                 });
 
-                // Update Data Chart JS
-                rsvpChart.data.datasets[0].data = [countHadir, countTidak, countRagu];
-                rsvpChart.update();
+                window.rsvpChart.data.datasets[0].data = [countHadir, countTidak, countRagu];
+                window.rsvpChart.update();
             } else {
-                container.innerHTML = '<p style="text-align:center; color:#666;">Belum ada ucapan. Jadilah yang pertama!</p>';
+                container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">Belum ada ucapan. Jadilah yang pertama!</p>';
             }
             
-            // Update total komentar teks
             document.getElementById('count-comments').innerText = totalComments;
         });
     </script>
