@@ -3,41 +3,396 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Generator Link Undangan</title>
+    <title>Sistem Admin Manajemen Tamu - Sabrina & Adnan</title>
+    
+    <!-- Tailwind CSS untuk Desain Premium & Responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- SheetJS untuk Parsing File Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: #D4AF37; display: flex; justify-content: center; align: center; height: 100vh; margin: 0; align-items: center; }
-        .card { background: #1E1E1E; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2); width: 100%; max-width: 400px; border: 1px solid #D4AF37; }
-        h2 { text-align: center; margin-top: 0; }
-        input, button, textarea { width: 100%; margin-bottom: 15px; padding: 12px; box-sizing: border-box; border-radius: 5px; border: 1px solid #D4AF37; background: #2A2A2A; color: white; }
-        button { background: #D4AF37; color: #121212; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #b5952f; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #0B0B0C; color: #F3F4F6; }
+        .font-royal { font-family: 'Cinzel', serif; }
+        .gold-gradient { background: linear-gradient(135deg, #B38728 0%, #FBF5B7 25%, #DAA520 50%, #FBF5B7 75%, #AA771C 100%); }
+        .gold-border { border-color: rgba(212, 175, 55, 0.4); }
+        .glass-panel { background: rgba(22, 22, 26, 0.75); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.2); }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0B0B0C; }
+        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 10px; }
     </style>
 </head>
-<body>
-    <div class="card">
-        <h2>Buat Link Undangan</h2>
-        <input type="text" id="namaTamu" placeholder="Nama Tamu (Cth: Ahmad Fahril)">
-        <input type="text" id="alamatTamu" placeholder="Alamat/Instansi (Cth: Sukoharjo)">
-        <button onclick="generateLink()">Generate Link</button>
-        <textarea id="hasilLink" rows="4" readonly placeholder="Link akan muncul di sini..."></textarea>
-        <button onclick="copyLink()" style="background: #2A2A2A; color: #D4AF37;">Copy Link</button>
+<body class="p-4 md:p-8 min-h-screen">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- HEADER UTAMA -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 pb-6 border-b border-zinc-800">
+            <div>
+                <h1 class="font-royal text-2xl md:text-3xl text-amber-400 tracking-wider">PANEL KONTROL KERAJAAN</h1>
+                <p class="text-xs md:text-sm text-zinc-400 mt-1">Sistem Manajemen Distribusi Tautan Undangan Sabrina & Adnan</p>
+            </div>
+            <!-- CARD TOTAL TAMU -->
+            <div class="glass-panel py-3 px-6 rounded-2xl flex items-center gap-4 w-full md:w-auto shadow-xl">
+                <div class="w-12 h-12 rounded-xl gold-gradient flex items-center justify-center text-slate-950 text-xl font-bold">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                    <div class="text-xs text-zinc-400 uppercase tracking-widest font-semibold">Total Tamu</div>
+                    <div class="text-2xl font-bold text-white font-royal" id="counter-total">0</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- GRID INTERFASE UTAMA -->
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- KOLOM KIRI: INPUT FORM MANUAL & EXCEL -->
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                
+                <!-- FORM 1: ENTRI TAMU MANUAL -->
+                <section class="glass-panel p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2 font-royal">
+                        <i class="fa-solid fa-user-plus text-sm"></i> Entri Manual Tamu
+                    </h2>
+                    <form id="manualForm" class="flex flex-col gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Nama Lengkap Tamu</label>
+                            <input type="text" id="inputName" placeholder="Contoh: Ahmad Fahril" class="w-full p-3 bg-zinc-900/60 border border-zinc-700 rounded-xl focus:outline-none focus:border-amber-400 text-white placeholder-zinc-600 transition" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Lokasi / Kota Domisili</label>
+                            <input type="text" id="inputLocation" placeholder="Contoh: Surakarta" class="w-full p-3 bg-zinc-900/60 border border-zinc-700 rounded-xl focus:outline-none focus:border-amber-400 text-white placeholder-zinc-600 transition" required>
+                        </div>
+                        <button type="submit" class="gold-gradient text-slate-950 font-bold py-3 rounded-xl hover:opacity-90 active:scale-95 transition tracking-wider text-sm mt-2 shadow-lg shadow-amber-500/10">
+                            <i class="fa-solid fa-cloud-arrow-up mr-1"></i> SIMPAN KE SERVER
+                        </button>
+                    </form>
+                </section>
+
+                <!-- FORM 2: IMPORT MASSAL EXCEL -->
+                <section class="glass-panel p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-lg font-bold text-amber-400 mb-2 flex items-center gap-2 font-royal">
+                        <i class="fa-solid fa-file-excel text-sm"></i> Import Massal Excel
+                    </h2>
+                    <p class="text-xs text-zinc-400 mb-4 leading-relaxed">Unggah berkas spreadsheet dengan struktur kolom header <span class="text-amber-300 font-semibold">"Nama Tamu"</span> dan <span class="text-amber-300 font-semibold">"Lokasi"</span>.</p>
+                    
+                    <div class="border-2 border-dashed border-zinc-700 rounded-xl p-4 text-center hover:border-amber-400/60 transition cursor-pointer relative bg-zinc-900/30">
+                        <input type="file" id="excelFile" accept=".xlsx, .xls, .csv" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                        <div class="flex flex-col items-center gap-2 py-2">
+                            <i class="fa-solid fa-file-arrow-up text-3xl text-zinc-500"></i>
+                            <span class="text-xs font-medium text-zinc-300" id="fileNameDisplay">Pilih atau Seret File Berkas</span>
+                            <span class="text-[10px] text-zinc-500">Mendukung format .xlsx, .xls, .csv</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- KOLOM KANAN: DATABASE VIEWER TABLE -->
+            <div class="lg:col-span-8">
+                <section class="glass-panel p-6 rounded-2xl shadow-lg h-full flex flex-col">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2 font-royal">
+                            <i class="fa-solid fa-address-book text-sm"></i> Basis Data Undangan Terdistribusi
+                        </h2>
+                        <!-- PENCARIAN TAMU -->
+                        <div class="relative w-full sm:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-xs text-zinc-500"></i>
+                            <input type="text" id="searchBar" placeholder="Cari nama tamu..." class="w-full pl-9 pr-4 py-2.5 bg-zinc-900/80 border border-zinc-700 rounded-xl focus:outline-none focus:border-amber-400 text-xs text-white placeholder-zinc-500 transition">
+                        </div>
+                    </div>
+
+                    <!-- TABEL RESPONSIVE CONTAINER -->
+                    <div class="overflow-x-auto flex-1 bg-zinc-950/40 rounded-xl border border-zinc-800 max-h-[520px]">
+                        <table class="w-full text-left border-collapse min-w-[600px]">
+                            <thead>
+                                <tr class="bg-zinc-900/90 text-zinc-400 text-[11px] font-bold uppercase tracking-wider border-b border-zinc-800">
+                                    <th class="p-4 w-2/5">Identitas Tamu</th>
+                                    <th class="p-4 w-1/5">Asal Domisili</th>
+                                    <th class="p-4 w-2/5 text-right">Tautan Akses Spesifik</th>
+                                </tr>
+                            </thead>
+                            <tbody id="guestTableBody" class="text-xs divide-y divide-zinc-900">
+                                <tr>
+                                    <td colspan="3" class="p-8 text-center text-zinc-500">
+                                        <i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Sinkronisasi database Cloud Firestore...
+                                    </td>
+                                    <td class="hidden"></td><td class="hidden"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
     </div>
 
-    <script>
-        function generateLink() {
-            let nama = document.getElementById('namaTamu').value.replace(/ /g, '_');
-            let alamat = document.getElementById('alamatTamu').value.replace(/ /g, '_');
-            let domain = "https://undangansabrina&adnan.web.id/";
-            let link = `${domain}?to=${nama}%${alamat}`;
-            document.getElementById('hasilLink').value = link;
+    <!-- WIDGET MODAL POPUP NOTIFIKASI CUSTOM (USER FRIENDLY) -->
+    <div id="notifyModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="bg-zinc-900 border border-zinc-800 max-w-sm w-full rounded-2xl p-6 text-center shadow-2xl scale-95 transition-all duration-300">
+            <div id="notifyIcon" class="text-5xl mb-4"></div>
+            <h3 id="notifyTitle" class="font-royal text-lg text-white mb-2"></h3>
+            <p id="notifyDesc" class="text-xs text-zinc-400 line-height-relaxed mb-6"></p>
+            <button onclick="closeNotification()" class="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-medium py-2.5 rounded-xl text-xs transition">
+                Dimengerti
+            </button>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       LOGIK CORE SYSTEM ENGINE (FIREBASE V10 MANAGEMENT)
+       ========================================================================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // Konfigurasi Firebase Anda (Disinkronkan dengan Modul Undangan)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBKYztNuwvRKsMKLyOtEUmFsMSomGX-WAQ",
+            authDomain: "undangansabrinaadnan.firebaseapp.com",
+            projectId: "undangansabrinaadnan",
+            storageBucket: "undangansabrinaadnan.firebasestorage.app",
+            messagingSenderId: "159904851753",
+            appId: "1:159904851753:web:a15476094bfe49c19bf938",
+            measurementId: "G-0HVZ2SLTMQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const guestsCollection = collection(db, 'registered_guests');
+
+        // State Penyimpanan Data di Memori Lokal (Untuk Kecepatan Search & Validasi Duplikasi)
+        let localCacheGuests = [];
+
+        // Menentukan Alamat Utama Undangan secara Dinamis (Mendukung localhost maupun hosting)
+        const getBaseInvitationUrl = () => {
+            const currentPath = window.location.pathname;
+            const dir = currentPath.substring(0, currentPath.lastIndexOf('/'));
+            return `${window.location.origin}${dir}/index.html`;
+        };
+
+        // GLOBAL NOTIFICATION ALERT FUNCTION SYSTEM
+        window.showNotification = (type, title, message) => {
+            const modal = document.getElementById('notifyModal');
+            const icon = document.getElementById('notifyIcon');
+            const tTitle = document.getElementById('notifyTitle');
+            const tDesc = document.getElementById('notifyDesc');
+
+            if(type === 'success') {
+                icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500 animate-pulse"></i>';
+                tTitle.className = "font-royal text-lg text-emerald-400 mb-2";
+            } else if (type === 'error') {
+                icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-rose-500"></i>';
+                tTitle.className = "font-royal text-lg text-rose-400 mb-2";
+            }
+
+            tTitle.innerText = title;
+            tDesc.innerText = message;
+            modal.classList.replace('hidden', 'flex');
+        };
+
+        window.closeNotification = () => {
+            document.getElementById('notifyModal').classList.replace('flex', 'hidden');
+        };
+
+        // ARSITEKTUR MEMBANGUN UNTUK GENERATE TAUTAN UNIK (SPASI DIUBAH MENJADI UNDERSCORE)
+        const generateInvitationLink = (name, location) => {
+            const cleanName = name.trim().replace(/\s+/g, '_');
+            const cleanLoc = location.trim().replace(/\s+/g, '_');
+            return `${getBaseInvitationUrl()}?to=${encodeURIComponent(cleanName)}%${encodeURIComponent(cleanLoc)}`;
+        };
+
+        // REALTIME SYNCHRONIZATION STREAMING DATA FIRESTORE
+        onSnapshot(guestsCollection, (snapshot) => {
+            localCacheGuests = [];
+            snapshot.forEach((doc) => {
+                localCacheGuests.push(doc.data());
+            });
+            
+            // Perbarui Counter Angka Total Tamu Undangan
+            document.getElementById('counter-total').innerText = localCacheGuests.length;
+            renderTable(localCacheGuests);
+        });
+
+        // FUNGSI RENDER TABEL UTAMA DISERTAI TOMBOL COPY
+        function renderTable(dataList) {
+            const tbody = document.getElementById('guestTableBody');
+            tbody.innerHTML = '';
+
+            if (dataList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" class="p-8 text-center text-zinc-600">Tidak ada data tamu undangan ditemukan.</td><td class="hidden"></td><td class="hidden"></td></tr>';
+                return;
+            }
+
+            dataList.forEach((guest) => {
+                const generatedLink = generateInvitationLink(guest.name, guest.location);
+                const tableRow = document.createElement('tr');
+                tableRow.className = "hover:bg-zinc-900/40 transition group border-b border-zinc-900";
+                
+                tableRow.innerHTML = `
+                    <td class="p-4 font-medium text-white group-hover:text-amber-300 transition">${guest.name}</td>
+                    <td class="p-4 text-zinc-400">${guest.location}</td>
+                    <td class="p-4 text-right flex justify-end items-center gap-2">
+                        <input type="text" value="${generatedLink}" readonly class="bg-zinc-950 border border-zinc-800 rounded-lg p-1.5 text-[10px] text-zinc-400 w-48 focus:outline-none hidden sm:inline-block">
+                        <button class="copy-btn bg-zinc-900 hover:bg-amber-400 hover:text-slate-950 border border-zinc-700 hover:border-amber-400 p-2 rounded-lg transition-all text-zinc-300 flex items-center gap-1.5 active:scale-90" data-link="${generatedLink}">
+                            <i class="fa-regular fa-copy"></i> <span class="text-[10px] font-semibold tracking-wider">SALIN</span>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tableRow);
+            });
+
+            // Daftarkan Trigger Event Listener Klik Untuk Seluruh Tombol Salin
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const linkText = this.getAttribute('data-link');
+                    navigator.clipboard.writeText(linkText).then(() => {
+                        const originalContent = this.innerHTML;
+                        this.innerHTML = '<i class="fa-solid fa-check text-emerald-500"></i> <span class="text-[10px] text-emerald-500 font-bold">SALIN</span>';
+                        setTimeout(() => { this.innerHTML = originalContent; }, 1500);
+                    });
+                });
+            });
         }
 
-        function copyLink() {
-            let copyText = document.getElementById("hasilLink");
-            copyText.select();
-            document.execCommand("copy");
-            alert("Link berhasil disalin!");
-        }
+        // AKSI SUBMIT FORM ENTRI SECARA MANUAL WITH DUPLICATE BLOCKER ENGINE
+        document.getElementById('manualForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const nameField = document.getElementById('inputName');
+            const locField = document.getElementById('inputLocation');
+            
+            const rawName = nameField.value.trim();
+            const rawLoc = locField.value.trim();
+
+            // Algoritma Proteksi Pencegahan Data Ganda / Identik
+            const isDuplicate = localCacheGuests.some(g => 
+                g.name.toLowerCase() === rawName.toLowerCase() && 
+                g.location.toLowerCase() === rawLoc.toLowerCase()
+            );
+
+            if(isDuplicate) {
+                window.showNotification(
+                    'error', 
+                    'Gagal Mengirim Ke Server', 
+                    `Entri dibatalkan karena nama tamu "${rawName}" dengan asal domisili "${rawLoc}" sudah terdaftar di dalam sistem.`
+                );
+                return;
+            }
+
+            // Membuat ID Unik Gabungan yang Valid untuk Penamaan Dokumen
+            const customDocId = btoa(encodeURIComponent(`${rawName}_${rawLoc}`)).replace(/=/g, '');
+
+            try {
+                await setDoc(doc(db, "registered_guests", customDocId), {
+                    name: rawName,
+                    location: rawLoc,
+                    timestamp: serverTimestamp ? serverTimestamp() : new Date().toISOString()
+                });
+
+                nameField.value = '';
+                locField.value = '';
+                window.showNotification('success', 'Penyimpanan Sukses', 'Identitas tamu berhasil diregistrasi ke sistem Cloud.');
+            } catch (err) {
+                console.error(err);
+                window.showNotification('error', 'Koneksi Bermasalah', 'Gagal memproses data menuju Firebase database.');
+            }
+        });
+
+        // SEARCH BAR INPUT FILTER IMPLEMENTATION ENGINE
+        document.getElementById('searchBar').addEventListener('input', function() {
+            const keyword = this.value.toLowerCase().trim();
+            const filteredResults = localCacheGuests.filter(g => 
+                g.name.toLowerCase().includes(keyword) || 
+                g.location.toLowerCase().includes(keyword)
+            );
+            renderTable(filteredResults);
+        });
+
+        // PARSING MASSAL DATA EXCEL DENGAN STRUKTUR VALIDASI YANG KETAT
+        document.getElementById('excelFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+
+            document.getElementById('fileNameDisplay').innerText = file.name;
+            const reader = new FileReader();
+
+            reader.onload = async function(e) {
+                try {
+                    const arrayBuffer = e.target.result;
+                    const data = new Uint8Array(arrayBuffer);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[firstSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+                    if(jsonData.length === 0) {
+                        window.showNotification('error', 'File Kosong', 'Unggahan dibatalkan karena berkas spreadsheet tidak memiliki baris data.');
+                        return;
+                    }
+
+                    // Pengkondisian Validasi Struktur Kolom Excel
+                    const sampleRow = jsonData[0];
+                    if(!sampleRow.hasOwnProperty('Nama Tamu') || !sampleRow.hasOwnProperty('Lokasi')) {
+                        window.showNotification(
+                            'error', 
+                            'Format Berkas Salah', 
+                            'Gagal memproses file. Pastikan struktur baris tajuk / header kolom utama bertuliskan "Nama Tamu" dan "Lokasi" dengan ejaan yang tepat.'
+                        );
+                        return;
+                    }
+
+                    let addedCount = 0;
+                    let skippedCount = 0;
+
+                    // Eksekusi Pemindaian Dan Loop Batch Upload Injection
+                    for (const row of jsonData) {
+                        const excelName = row['Nama Tamu'] ? String(row['Nama Tamu']).trim() : "";
+                        const excelLoc = row['Lokasi'] ? String(row['Lokasi']).trim() : "";
+
+                        if(!excelName || !excelLoc) {
+                            skippedCount++;
+                            continue;
+                        }
+
+                        // Deteksi Duplikasi di Sektor File Loop Excel
+                        const isExist = localCacheGuests.some(g => 
+                            g.name.toLowerCase() === excelName.toLowerCase() && 
+                            g.location.toLowerCase() === excelLoc.toLowerCase()
+                        );
+
+                        if(isExist) {
+                            skippedCount++;
+                            continue;
+                        }
+
+                        const generatedDocId = btoa(encodeURIComponent(`${excelName}_${excelLoc}`)).replace(/=/g, '');
+                        
+                        await setDoc(doc(db, "registered_guests", generatedDocId), {
+                            name: excelName,
+                            location: excelLoc,
+                            timestamp: new Date().toISOString()
+                        });
+                        addedCount++;
+                    }
+
+                    window.showNotification(
+                        'success', 
+                        'Proses Import Selesai', 
+                        `Berhasil menyuntikkan ${addedCount} data tamu baru. Berhasil melewati ${skippedCount} entri kosong atau data ganda.`
+                    );
+
+                } catch (err) {
+                    console.error(err);
+                    window.showNotification('error', 'Kerusakan Struktur', 'Gagal membaca isi dokumen. Pastikan file tidak terkunci enkripsi atau rusak.');
+                } finally {
+                    document.getElementById('excelFile').value = ''; // Reset input file
+                }
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
     </script>
 </body>
 </html>
