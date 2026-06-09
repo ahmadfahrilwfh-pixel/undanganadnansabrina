@@ -22,7 +22,7 @@
             --gold-gradient: linear-gradient(135deg, #B38728 0%, #FBF5B7 25%, #DAA520 50%, #FBF5B7 75%, #AA771C 100%);
             --gold-glow: drop-shadow(0 0 12px rgba(212, 175, 55, 0.7));
             
-            /* Tema Terang - Dioptimalkan agar Gambar Latar Terlihat Jelas & Mewah */
+            /* Tema Terang */
             --bg-base: #FAF6F0;
             --text-color: #262626; 
             --text-muted: #4A4A4A;
@@ -34,7 +34,7 @@
         }
 
         [data-theme="dark"] {
-            /* Tema Gelap - Onyx Royal */
+            /* Tema Gelap */
             --bg-base: #0D0D0E;
             --text-color: #F8F9FA; 
             --text-muted: #D1D5DB;
@@ -130,7 +130,7 @@
         }
 
         /* ==========================================================================
-           4. INTERAKTIF RSVP BUTTONS (NO MORE DROPDOWN)
+           4. INTERAKTIF RSVP BUTTONS
            ========================================================================== */
         .rsvp-button-group {
             display: grid; grid-template-columns: 1fr; gap: 12px; margin: 20px 0;
@@ -165,9 +165,9 @@
         .title-names { font-family: 'Great Vibes', cursive; font-size: clamp(3.8rem, 9vw, 6.5rem); background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 15px 0; }
         
         .countdown { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 40px auto; max-width: 600px; }
-        .time-box { background: rgba(212, 175, 55, 0.06); border: 1px solid var(--gold-mid); border-radius: 16px; padding: 15px; min-width: 85px; flex: 1; }
+        .time-box { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 16px; padding: 15px; min-width: 85px; flex: 1; box-shadow: var(--shadow-card); }
         .time-box span { font-size: 2.2rem; font-weight: 700; font-family: 'Cinzel', serif; color: var(--gold-mid); display: block; }
-        .time-box small { text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.75rem; color: var(--text-color); }
+        .time-box small { text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.75rem; color: var(--text-color); font-weight: 600;}
         
         .profile-container { display: flex; flex-direction: column; gap: 40px; margin-top: 50px; align-items: center; justify-content: center; }
         @media (min-width: 768px) { .profile-container { flex-direction: row; gap: 15px; } }
@@ -199,7 +199,7 @@
         input:focus, textarea:focus { outline: none; border-color: var(--gold-mid); box-shadow: 0 0 15px rgba(212,175,55,0.25); }
         
         #comments-container { margin-top: 35px; max-height: 450px; overflow-y: auto; text-align: left; padding-right: 10px; }
-        .comment-box { border-left: 3px solid var(--gold-mid) !important; margin-bottom: 15px; }
+        .comment-box { border-left: 3px solid var(--gold-mid) !important; margin-bottom: 15px; text-align: left; }
         .comment-box strong { color: var(--gold-mid); font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
         .badge { font-size: 0.7rem; padding: 5px 12px; border-radius: 30px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-left: 8px; }
 
@@ -274,7 +274,7 @@
         </button>
     </div>
 
-    <audio id="bgm-player" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"></audio>
+    <audio id="bgm-player" loop src="https://ia800600.us.archive.org/16/items/MaherZainInstrumental/MaherZain-BarakaAllahLakuma-Instrumental.mp3"></audio>
 
     <div id="petal-container"></div>
 
@@ -340,7 +340,12 @@
                             <img src="assets/img/foto-sabrina.webp" alt="Sabrina" class="profile-img">
                         </div>
                         <h3>Sabrina Aulia R.H</h3>
-                        <a href="#" class="footer-icons" style="width:35px; height:35px; font-size:1rem; margin:10px auto;"><i class="fa-brands fa-instagram"></i></a>
+                        
+                        <div style="display: flex; gap: 15px; justify-content: center; margin: 15px 0;">
+                            <a href="#" class="footer-icons" style="width:38px; height:38px; font-size:1.1rem; margin:0;"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="footer-icons" style="width:38px; height:38px; font-size:1.1rem; margin:0;"><i class="fa-brands fa-whatsapp"></i></a>
+                        </div>
+                        
                         <p class="parents">Putri Pertama dari<br><strong>Bapak Alm. Fuad Ngalim Hidayanto</strong><br>& Ibu Siti Nurul Hidayah</p>
                     </div>
                     
@@ -351,7 +356,12 @@
                             <img src="assets/img/foto-adnan.webp" alt="Adnan" class="profile-img">
                         </div>
                         <h3>Adnan Abdul Karim</h3>
-                        <a href="#" class="footer-icons" style="width:35px; height:35px; font-size:1rem; margin:10px auto;"><i class="fa-brands fa-instagram"></i></a>
+                        
+                        <div style="display: flex; gap: 15px; justify-content: center; margin: 15px 0;">
+                            <a href="#" class="footer-icons" style="width:38px; height:38px; font-size:1.1rem; margin:0;"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="footer-icons" style="width:38px; height:38px; font-size:1.1rem; margin:0;"><i class="fa-brands fa-whatsapp"></i></a>
+                        </div>
+                        
                         <p class="parents">Putra Keempat dari<br><strong>Bapak Sadino Tomo Raharjo</strong><br>& Ibu Mulyani</p>
                     </div>
                 </div>
@@ -420,6 +430,14 @@
                             <p class="adab-arabic">بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِى خَيْرٍ</p>
                             <strong style="color: var(--gold-mid); font-size: 1.05rem;">Mendoakan Keberkahan</strong>
                             <p style="margin: 5px 0 0; font-size: 0.9rem; color: var(--text-muted);">"Semoga Allah memberkahimu di waktu bahagia dan susah, serta menyatukan kalian dalam kebaikan." (HR. Abu Daud)</p>
+                        </div>
+                    </li>
+                    <li class="reveal-element">
+                        <i class="fa-solid fa-face-smile"></i>
+                        <div class="adab-content">
+                            <p class="adab-arabic">تَبَسُّمُكَ فِى وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ</p>
+                            <strong style="color: var(--gold-mid); font-size: 1.05rem;">Turut Berbahagia</strong>
+                            <p style="margin: 5px 0 0; font-size: 0.9rem; color: var(--text-muted);">"Senyummu di hadapan saudaramu adalah sedekah." (HR. Tirmidzi). Turut mendoakan serta memeriahkan hari kebahagiaan kami dengan senyuman tulus.</p>
                         </div>
                     </li>
                 </ul>
@@ -535,7 +553,6 @@
     </footer>
 
     <script>
-        // INTERSECTION OBSERVER ANIMASI SCROLL MULTI-ELEMENT & TRACK ACTIVE NAV MENU
         const revealEntries = () => {
             const observerOptions = { threshold: 0.12, rootMargin: "0px 0px -40px 0px" };
             
@@ -549,7 +566,6 @@
 
             document.querySelectorAll('.reveal-element').forEach((el) => observer.observe(el));
 
-            // Logic tambahan untuk highlight menu aktif saat di-scroll
             const sections = document.querySelectorAll('section');
             const navItems = document.querySelectorAll('.nav-item');
             
@@ -572,7 +588,6 @@
             });
         };
 
-        // EVENT LISTENER KLIK NAV ITEM (SMOOTH SCROLL MANUAL HIGHLIGHT)
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
@@ -580,7 +595,6 @@
             });
         });
 
-        // PEMBUATAN ELEMEN KELOPAK JATUH EMAS ROYAL
         const petalContainer = document.getElementById('petal-container');
         for (let i = 0; i < 15; i++) {
             const petal = document.createElement('div');
@@ -593,7 +607,6 @@
             petalContainer.appendChild(petal);
         }
 
-        // BACKSOUND MANAGER
         const bgm = document.getElementById('bgm-player');
         const audioIcon = document.getElementById('audio-icon');
         let isAudioPlaying = false;
@@ -610,7 +623,6 @@
             }
         }
 
-        // THEME TOGGLE (LIGHT & DARK ACCENT)
         function toggleTheme() {
             const htmlTag = document.documentElement;
             const themeIcon = document.getElementById('theme-icon');
@@ -630,7 +642,7 @@
             }
         }
 
-        // PARSING UNIQUE PARAMS (?to=Nama_Tamu%Kota)
+        // --- FIX PENGGABUNGAN NAMA (__ SEBAGAI PEMISAH URL) ---
         const urlParams = new URLSearchParams(window.location.search);
         const toParam = urlParams.get('to') || "Tamu_Undangan";
         
@@ -639,7 +651,7 @@
         let guestName = "Tamu Undangan";
         let guestAddress = "";
         if(toParam && toParam !== "Tamu_Undangan") {
-            const parts = toParam.split('%');
+            const parts = toParam.split('__');
             if(parts[0]) guestName = parts[0].replace(/_/g, ' ');
             if(parts[1]) guestAddress = "di " + parts[1].replace(/_/g, ' ');
         }
@@ -647,7 +659,6 @@
         document.getElementById('guest-address').innerText = guestAddress;
         document.getElementById('rsvp-name').value = guestName;
 
-        // SELEKSI STATUS INTERAKTIF BUTTON CLICK REACTION
         let activeStatus = "";
         document.querySelectorAll('.rsvp-trigger').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -657,12 +668,10 @@
             });
         });
 
-        // ACTION BUKA UNDANGAN (MUNCULKAN MENU NAVIGASI BAWAH & ANIMASI)
         function openInvitation() {
             document.getElementById('cover').style.transform = "translateY(-100vh)";
             document.body.classList.remove('lock-scroll');
             
-            // Tampilkan Menu Utama & Sesuaikan Widget Floating
             document.getElementById('mainNavigation').classList.add('show');
             document.getElementById('floating-widget').style.bottom = "85px";
 
@@ -682,7 +691,6 @@
             navigator.clipboard.writeText(text).then(() => alert("Nomor Rekening Berhasil Disalin."));
         }
 
-        // REALTIME COUNTDOWN SYSTEM
         const countDownDate = new Date("Sep 12, 2026 08:00:00").getTime();
         setInterval(function() {
             let now = new Date().getTime();
@@ -715,7 +723,6 @@
         const statusCollection = collection(db, 'rsvp_status');
         const commentsCollection = collection(db, 'rsvp_comments');
 
-        // INITIALIZE CHART JAVASCRIPT - RESPONSIVE BAR CHART (HORIZONTAL AXIS)
         const ctx = document.getElementById('rsvpChart').getContext('2d');
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
         
@@ -747,7 +754,6 @@
             }
         });
 
-        // FORM ACTIONS HANDLING DATA INJECTION
         document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             if(!activeStatus) {
@@ -786,7 +792,6 @@
             }
         });
 
-        // SNAPSHOT SINKRONISASI REALTIME GRAFIK KELOLA (RSVP_STATUS)
         onSnapshot(statusCollection, (snapshot) => {
             let totalTamu = snapshot.size;
             let countHadir = 0, countTidak = 0, countRagu = 0;
@@ -813,7 +818,7 @@
             window.rsvpChart.update();
         });
 
-        // SNAPSHOT STREAMING REALTIME DINDING DOA (RSVP_COMMENTS)
+        // --- FIX ALIGNMENT TEKS KOMENTAR (RATA KIRI) ---
         const qComments = query(commentsCollection, orderBy("timestamp", "desc"));
         onSnapshot(qComments, (snapshot) => {
             const container = document.getElementById('comments-container');
@@ -827,10 +832,12 @@
                     let badgeColor = row.status === "Ragu-ragu" ? "#000" : "#fff";
                     
                     container.innerHTML += `
-                        <div class="comment-box glass-card" style="padding: 18px; border-radius:14px;">
-                            <strong><i class="fa-solid fa-circle-user"></i> ${row.name}</strong>
-                            <span class="badge" style="background:${badgeBg}; color:${badgeColor};">${row.status}</span>
-                            <p style="margin:10px 0 0 0; font-size:0.92rem; font-style:italic; line-height:1.5;">"${row.message}"</p>
+                        <div class="comment-box glass-card" style="padding: 18px; border-radius:14px; text-align: left;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <strong><i class="fa-solid fa-circle-user"></i> ${row.name}</strong>
+                                <span class="badge" style="background:${badgeBg}; color:${badgeColor};">${row.status}</span>
+                            </div>
+                            <p style="margin:10px 0 0 0; font-size:0.92rem; font-style:italic; line-height:1.5; text-align: left;">"${row.message}"</p>
                         </div>
                     `;
                 });
