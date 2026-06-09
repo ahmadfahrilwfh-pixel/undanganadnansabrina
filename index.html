@@ -106,7 +106,6 @@
         .reveal-zoom { opacity: 0; transform: scale(0.85); transition: all 0.9s cubic-bezier(0.25, 1, 0.5, 1); }
         .reveal-zoom.active { opacity: 1; transform: scale(1); }
         
-        /* Delay untuk elemen bertumpuk agar muncul bergantian */
         .delay-100 { transition-delay: 100ms; }
         .delay-200 { transition-delay: 200ms; }
         .delay-300 { transition-delay: 300ms; }
@@ -287,21 +286,21 @@
         </button>
     </div>
 
-    <audio id="bgm-player" loop src="https://ia800600.us.archive.org/16/items/MaherZainInstrumental/MaherZain-BarakaAllahLakuma-Instrumental.mp3"></audio>
+    <audio id="bgm-player" loop src="assets/audio/backsound.mp3"></audio>
 
     <div id="petal-container"></div>
 
     <div id="cover">
-        <h3 class="reveal-zoom delay-100" style="letter-spacing: 5px; font-size: 1rem; font-weight: 600; color: var(--gold-dark);">THE WEDDING OF</h3>
-        <h1 class="title-names reveal-zoom delay-200" style="margin: 5px 0;">Sabrina & Adnan</h1>
+        <h3 style="letter-spacing: 5px; font-size: 1rem; font-weight: 600; color: var(--gold-dark);">THE WEDDING OF</h3>
+        <h1 class="title-names" style="margin: 5px 0;">Sabrina & Adnan</h1>
         
-        <div class="glass-card reveal-up delay-300" style="margin-top: 40px; padding: 30px 45px; min-width: 290px;">
+        <div class="glass-card" style="margin-top: 40px; padding: 30px 45px; min-width: 290px;">
             <p style="margin:0; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);">Kepada Yth. Bapak/Ibu/Saudara/i</p>
             <h2 id="guest-name" style="margin: 15px 0 10px; font-family: 'Montserrat'; font-weight: 600; font-size: 1.6rem; color: var(--text-color); filter:none;">Nama Tamu</h2>
             <p id="guest-address" style="margin:0; font-size: 0.9rem; color: var(--gold-dark); font-weight: 500;"></p>
         </div>
         
-        <button class="btn-gold reveal-up delay-400" onclick="openInvitation()">
+        <button class="btn-gold" onclick="openInvitation()">
             <i class="fas fa-envelope-open-text"></i> Buka Undangan
         </button>
     </div>
@@ -587,7 +586,6 @@
     </footer>
 
     <script>
-        // SCRIPT ANIMASI MIKRO (MENDETEKSI SEMUA ELEMEN)
         const revealEntries = () => {
             const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -20px 0px" };
             
@@ -760,7 +758,6 @@
         const ctx = document.getElementById('rsvpChart').getContext('2d');
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
         
-        // GRAFIK DIUBAH HANYA 3 KATEGORI (HADIR, TIDAK HADIR, TANPA KET)
         window.rsvpChart = new Chart(ctx, {
             type: 'bar',
             data: {
