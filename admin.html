@@ -26,18 +26,31 @@
 <body class="p-4 md:p-8 min-h-screen">
 
     <div class="max-w-7xl mx-auto">
-        <header class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 pb-6 border-b border-zinc-800">
+        <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-6 pb-6 border-b border-zinc-800">
             <div>
                 <h1 class="font-royal text-2xl md:text-3xl text-amber-400 tracking-wider">PANEL KONTROL KERAJAAN</h1>
                 <p class="text-xs md:text-sm text-zinc-400 mt-1">Sistem Manajemen Distribusi & Moderasi Sabrina & Adnan</p>
             </div>
-            <div class="glass-panel py-3 px-6 rounded-2xl flex items-center gap-4 w-full md:w-auto shadow-xl">
-                <div class="w-12 h-12 rounded-xl gold-gradient flex items-center justify-center text-slate-950 text-xl font-bold">
-                    <i class="fa-solid fa-users"></i>
+            
+            <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+                <div class="glass-panel py-3 px-6 rounded-2xl flex items-center gap-4 shadow-xl flex-1 sm:flex-none">
+                    <div class="w-12 h-12 rounded-xl gold-gradient flex items-center justify-center text-slate-950 text-xl font-bold">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-zinc-400 uppercase tracking-widest font-semibold">Total Tamu</div>
+                        <div class="text-2xl font-bold text-white font-royal" id="counter-total">0</div>
+                    </div>
                 </div>
-                <div>
-                    <div class="text-xs text-zinc-400 uppercase tracking-widest font-semibold">Total Tamu</div>
-                    <div class="text-2xl font-bold text-white font-royal" id="counter-total">0</div>
+                
+                <div class="glass-panel py-3 px-6 rounded-2xl flex items-center gap-4 shadow-xl flex-1 sm:flex-none border-emerald-500/20">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xl font-bold shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-emerald-400/80 uppercase tracking-widest font-semibold">Telah Dibuka</div>
+                        <div class="text-2xl font-bold text-white font-royal" id="counter-opened">0</div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -86,7 +99,7 @@
                 <section class="glass-panel p-6 rounded-2xl shadow-lg flex-1 flex flex-col">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                         <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2 font-royal">
-                            <i class="fa-solid fa-address-book text-sm"></i> Basis Data Undangan Terdistribusi
+                            <i class="fa-solid fa-address-book text-sm"></i> Basis Data Undangan
                         </h2>
                         <div class="relative w-full sm:w-64">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-xs text-zinc-500"></i>
@@ -94,18 +107,19 @@
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto flex-1 bg-zinc-950/40 rounded-xl border border-zinc-800 max-h-[400px]">
-                        <table class="w-full text-left border-collapse min-w-[600px]">
+                    <div class="overflow-x-auto flex-1 bg-zinc-950/40 rounded-xl border border-zinc-800 max-h-[500px]">
+                        <table class="w-full text-left border-collapse min-w-[700px]">
                             <thead>
                                 <tr class="bg-zinc-900/90 text-zinc-400 text-[11px] font-bold uppercase tracking-wider border-b border-zinc-800">
-                                    <th class="p-4 w-2/5">Identitas Tamu</th>
-                                    <th class="p-4 w-1/5">Asal Domisili</th>
-                                    <th class="p-4 w-2/5 text-right">Aksi & Tautan Khusus</th>
+                                    <th class="p-4 w-[30%]">Identitas Tamu</th>
+                                    <th class="p-4 w-[25%]">Asal Domisili</th>
+                                    <th class="p-4 w-[20%] text-center">Status Akses</th>
+                                    <th class="p-4 w-[25%] text-right">Aksi & Tautan Khusus</th>
                                 </tr>
                             </thead>
                             <tbody id="guestTableBody" class="text-xs divide-y divide-zinc-900">
                                 <tr>
-                                    <td colspan="3" class="p-8 text-center text-zinc-500">
+                                    <td colspan="4" class="p-8 text-center text-zinc-500">
                                         <i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Sinkronisasi database Cloud Firestore...
                                     </td>
                                 </tr>
@@ -135,7 +149,7 @@
         </main>
     </div>
 
-    <div id="notifyModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div id="notifyModal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
         <div class="bg-zinc-900 border border-zinc-800 max-w-sm w-full rounded-2xl p-6 text-center shadow-2xl scale-95 transition-all duration-300">
             <div id="notifyIcon" class="text-5xl mb-4"></div>
             <h3 id="notifyTitle" class="font-royal text-lg text-white mb-2"></h3>
@@ -150,7 +164,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // Konfigurasi Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBKYztNuwvRKsMKLyOtEUmFsMSomGX-WAQ",
             authDomain: "undangansabrinaadnan.firebaseapp.com",
@@ -164,18 +177,19 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
-        // Referensi Koleksi
+        // Referensi Koleksi Baru
         const guestsCollection = collection(db, 'registered_guests');
         const commentsCollection = collection(db, 'rsvp_comments');
+        const visitsCollection = collection(db, 'guest_visits'); // Tabel Tracking Status
 
         // State Penyimpanan Data Lokal
         let localCacheGuests = [];
+        let visitsMap = {}; // Penyimpanan status buka tiap tamu
 
-        // Menentukan Alamat Utama Undangan secara Dinamis
         const getBaseInvitationUrl = () => {
             const currentPath = window.location.pathname;
             const dir = currentPath.substring(0, currentPath.lastIndexOf('/'));
-            return `${window.location.origin}${dir}/index.html`;
+            return `${window.location.origin}${dir}/index.html`; // Sesuaikan path jika nama file utamanya bukan index.html
         };
 
         // GLOBAL NOTIFICATION ALERT
@@ -202,25 +216,52 @@
             document.getElementById('notifyModal').classList.replace('flex', 'hidden');
         };
 
-        // GENERATE TAUTAN UNDANGAN
         const generateInvitationLink = (name, location) => {
             const cleanName = name.trim().replace(/\s+/g, '_');
             const cleanLoc = location.trim().replace(/\s+/g, '_');
             return `${getBaseInvitationUrl()}?to=${encodeURIComponent(cleanName)}__${encodeURIComponent(cleanLoc)}`;
         };
 
+        // Update Statistik Dinamis
+        function updateStats() {
+            let openedCount = 0;
+            localCacheGuests.forEach(g => {
+                if(visitsMap[g.name.toLowerCase()]) {
+                    openedCount++;
+                }
+            });
+            document.getElementById('counter-total').innerText = localCacheGuests.length;
+            document.getElementById('counter-opened').innerText = openedCount;
+        }
+
         // ============================================================================
-        // 1. SISTEM MANAJEMEN TAMU (BACA & HAPUS)
+        // 1. SISTEM PELACAKAN AKSES (GUEST VISITS) - FITUR BARU
+        // ============================================================================
+        onSnapshot(visitsCollection, (snapshot) => {
+            visitsMap = {};
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                if(data.name && data.hasOpened) {
+                    visitsMap[data.name.toLowerCase()] = true;
+                }
+            });
+            // Update table dan stats setiap ada yang buka undangan
+            renderTable(localCacheGuests);
+            updateStats();
+        });
+
+
+        // ============================================================================
+        // 2. SISTEM MANAJEMEN TAMU (BACA & HAPUS)
         // ============================================================================
         onSnapshot(guestsCollection, (snapshot) => {
             localCacheGuests = [];
             snapshot.forEach((doc) => {
-                // Menyimpan ID Dokumen untuk keperluan penghapusan
                 localCacheGuests.push({ id: doc.id, ...doc.data() }); 
             });
             
-            document.getElementById('counter-total').innerText = localCacheGuests.length;
             renderTable(localCacheGuests);
+            updateStats();
         });
 
         function renderTable(dataList) {
@@ -228,24 +269,33 @@
             tbody.innerHTML = '';
 
             if (dataList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" class="p-8 text-center text-zinc-600">Tidak ada data tamu undangan ditemukan.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-zinc-600">Tidak ada data tamu undangan ditemukan.</td></tr>';
                 return;
             }
 
             dataList.forEach((guest) => {
                 const generatedLink = generateInvitationLink(guest.name, guest.location);
+                const guestKey = guest.name.toLowerCase();
+                const hasOpened = visitsMap[guestKey] === true;
+                
+                // Menentukan Badge Status Akses
+                const statusBadge = hasOpened 
+                    ? `<span class="bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.05)]"><i class="fa-solid fa-check-double mr-1"></i> Telah Dibuka</span>` 
+                    : `<span class="bg-zinc-800 text-zinc-400 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-zinc-700"><i class="fa-solid fa-envelope mr-1"></i> Belum Dibuka</span>`;
+
                 const tableRow = document.createElement('tr');
                 tableRow.className = "hover:bg-zinc-900/40 transition group border-b border-zinc-900";
                 
                 tableRow.innerHTML = `
                     <td class="p-4 font-medium text-white group-hover:text-amber-300 transition">${guest.name}</td>
                     <td class="p-4 text-zinc-400">${guest.location}</td>
+                    <td class="p-4 text-center">${statusBadge}</td>
                     <td class="p-4 text-right flex justify-end items-center gap-2">
-                        <input type="text" value="${generatedLink}" readonly class="bg-zinc-950 border border-zinc-800 rounded-lg p-1.5 text-[10px] text-zinc-400 w-48 focus:outline-none hidden sm:inline-block">
-                        <button class="copy-btn bg-zinc-900 hover:bg-amber-400 hover:text-slate-950 border border-zinc-700 hover:border-amber-400 p-2 rounded-lg transition-all text-zinc-300 flex items-center gap-1.5 active:scale-90" data-link="${generatedLink}">
+                        <input type="text" value="${generatedLink}" readonly class="bg-zinc-950 border border-zinc-800 rounded-lg p-1.5 text-[10px] text-zinc-400 w-48 focus:outline-none hidden xl:inline-block">
+                        <button class="copy-btn bg-zinc-900 hover:bg-amber-400 hover:text-slate-950 border border-zinc-700 hover:border-amber-400 p-2 rounded-lg transition-all text-zinc-300 flex items-center gap-1.5 active:scale-90" data-link="${generatedLink}" title="Salin Tautan">
                             <i class="fa-regular fa-copy"></i>
                         </button>
-                        <button class="delete-guest-btn bg-zinc-900 hover:bg-rose-500 hover:text-white border border-zinc-700 hover:border-rose-500 p-2 rounded-lg transition-all text-rose-500 flex items-center gap-1.5 active:scale-90" data-id="${guest.id}" data-name="${guest.name}">
+                        <button class="delete-guest-btn bg-zinc-900 hover:bg-rose-500 hover:text-white border border-zinc-700 hover:border-rose-500 p-2 rounded-lg transition-all text-rose-500 flex items-center gap-1.5 active:scale-90" data-id="${guest.id}" data-name="${guest.name}" title="Hapus Tamu">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
@@ -254,9 +304,8 @@
             });
         }
 
-        // DELEGASI EVENT UNTUK TOMBOL DI DALAM TABEL (COPY & DELETE)
+        // DELEGASI EVENT UNTUK TOMBOL TABEL
         document.getElementById('guestTableBody').addEventListener('click', async (e) => {
-            // Aksi Copy Link
             const copyBtn = e.target.closest('.copy-btn');
             if(copyBtn) {
                 const linkText = copyBtn.getAttribute('data-link');
@@ -267,7 +316,6 @@
                 });
             }
 
-            // Aksi Delete Tamu (FITUR BARU)
             const deleteBtn = e.target.closest('.delete-guest-btn');
             if(deleteBtn) {
                 const id = deleteBtn.getAttribute('data-id');
@@ -284,7 +332,7 @@
         });
 
         // ============================================================================
-        // 2. SISTEM MODERASI UCAPAN & DOA (FITUR BARU)
+        // 3. SISTEM MODERASI UCAPAN & DOA
         // ============================================================================
         const qComments = query(commentsCollection, orderBy("timestamp", "desc"));
         onSnapshot(qComments, (snapshot) => {
@@ -301,11 +349,9 @@
                 const data = docSnap.data();
                 const id = docSnap.id;
                 
-                // Menentukan warna badge berdasarkan kehadiran
                 let badgeClass = "bg-zinc-700 text-zinc-300";
                 if(data.status === "Hadir") badgeClass = "bg-emerald-500/20 text-emerald-400";
                 if(data.status === "Tidak Hadir") badgeClass = "bg-rose-500/20 text-rose-400";
-                if(data.status === "Ragu-ragu") badgeClass = "bg-amber-500/20 text-amber-400";
 
                 container.innerHTML += `
                     <div class="bg-zinc-900/60 border border-zinc-800 rounded-xl p-4 flex flex-col justify-between relative group hover:border-zinc-600 transition">
@@ -324,7 +370,6 @@
             });
         });
 
-        // DELEGASI EVENT UNTUK TOMBOL HAPUS UCAPAN
         document.getElementById('commentsContainer').addEventListener('click', async (e) => {
             const deleteBtn = e.target.closest('.delete-comment-btn');
             if(deleteBtn) {
@@ -333,7 +378,6 @@
                 if(confirm(`Yakin ingin menghapus ucapan dari "${name}"? Ucapan ini akan hilang secara real-time dari website utama.`)) {
                     try {
                         await deleteDoc(doc(db, "rsvp_comments", id));
-                        // Tidak perlu notifikasi sukses mengganggu flow jika sering hapus spam, biarkan silent/realtime
                     } catch (error) {
                         window.showNotification('error', 'Gagal Menghapus', 'Terjadi kesalahan saat menghapus komentar.');
                     }
@@ -342,7 +386,7 @@
         });
 
         // ============================================================================
-        // 3. INPUT MANUAL & EXCEL SCRIPT
+        // 4. INPUT MANUAL & EXCEL SCRIPT
         // ============================================================================
         document.getElementById('manualForm').addEventListener('submit', async function(e) {
             e.preventDefault();
