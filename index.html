@@ -157,6 +157,7 @@
             border-radius: 24px; padding: 40px 20px; max-width: 500px; width: 100%;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             animation: modalPop 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; /* Memastikan isi selalu center */
         }
         [data-theme="dark"] .cover-box { background: rgba(18, 18, 20, 0.45); border: 1px solid rgba(212, 175, 55, 0.3); }
 
@@ -209,7 +210,7 @@
         }
 
         section { padding: 90px 24px; max-width: 950px; margin: auto; text-align: center; position: relative; z-index: 5; }
-        .title-names { font-family: 'Great Vibes', cursive; font-size: clamp(3.2rem, 9vw, 6.5rem); background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 15px 0; }
+        .title-names { font-family: 'Great Vibes', cursive; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 15px 0; }
         
         .countdown { display: flex; justify-content: center; gap: clamp(8px, 2vw, 15px); flex-wrap: wrap; margin: 40px auto; max-width: 600px; }
         .time-box { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 16px; padding: 15px; min-width: 75px; flex: 1; box-shadow: var(--shadow-card); }
@@ -238,8 +239,8 @@
         .story-point h4 { font-family: 'Cinzel', serif; color: var(--gold-mid); font-size: 1.2rem; margin: 0 0 10px 0; }
         
         .adab-list { text-align: left; list-style: none; padding: 0; margin: 30px 0 0; }
-        .adab-list li { margin-bottom: 35px; display: flex; align-items: flex-start; gap: 20px; }
-        .adab-list i { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2rem; margin-top: 5px; width: 40px; text-align: center; }
+        .adab-list li { margin-bottom: 25px; display: flex; align-items: flex-start; gap: 20px; background: rgba(212, 175, 55, 0.05); padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); }
+        .adab-list i { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.2rem; margin-top: 5px; width: 40px; text-align: center; }
         
         form label { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold-mid); display: block; margin-bottom: 8px; }
         input, textarea { width: 100%; padding: 16px; background: rgba(212, 175, 55, 0.04); border: 1px solid var(--glass-border); color: var(--text-color); border-radius: 14px; box-sizing: border-box; font-family: 'Montserrat', sans-serif; margin-bottom: 20px; font-size: 0.95rem; }
@@ -322,12 +323,12 @@
     <div id="cover">
         <div class="cover-box">
             <h3 style="letter-spacing: 5px; font-size: clamp(0.8rem, 2.5vw, 1rem); font-weight: 600; color: var(--gold-dark);">THE WEDDING OF</h3>
-            <h1 class="title-names" style="margin: 5px 0;">Sabrina & Adnan</h1>
+            <h1 class="title-names" style="margin: 5px 0; white-space: nowrap; font-size: clamp(2.2rem, 7vw, 4.5rem);">Sabrina & Adnan</h1>
             
-            <div style="margin-top: 40px; padding: 30px 25px; min-width: 280px; max-width: 90%; color: var(--text-color);">
-                <p style="margin:0; font-size: clamp(0.7rem, 2vw, 0.85rem); letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);">Kepada Yth. Bapak/Ibu/Saudara/i</p>
-                <h2 id="guest-name" style="margin: 15px 0 10px; font-family: 'Montserrat'; font-weight: 600; font-size: clamp(1.3rem, 5vw, 1.6rem); color: var(--text-color); filter:none;">Nama Tamu</h2>
-                <p id="guest-address" style="margin:0; font-size: 0.9rem; color: var(--gold-dark); font-weight: 500;"></p>
+            <div style="margin: 35px auto; padding: 25px 20px; width: 100%; max-width: 320px; background-color: #ffffff; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <p style="margin:0; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: #666; font-weight: 600;">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+                <h2 id="guest-name" style="margin: 15px 0 10px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: clamp(1.2rem, 5vw, 1.4rem); color: #222; filter: none; text-shadow: none;">Nama Tamu</h2>
+                <p id="guest-address" style="margin:0; font-size: 0.95rem; color: #AA7C11; font-weight: 600;"></p>
             </div>
             
             <button class="btn-gold ripple-effect" onclick="openInvitation()">
@@ -414,28 +415,30 @@
         </section>
 
         <section id="event">
-            <p class="reveal-up delay-100" style="font-size: 1.1rem; font-weight: 500; font-style: italic; color: var(--gold-dark); margin-bottom: 5px;">Insyaallah acara akan dilaksanakan pada:</p>
-            <h2 class="reveal-up delay-200">Agenda Acara</h2>
-            <div class="reveal-zoom delay-300" style="text-align: center; margin-bottom: 20px;"><i class="fa-solid fa-ring" style="font-size: 3rem; color: var(--gold-mid);"></i></div>
+            <div class="glass-card reveal-up" style="padding-top: 55px; padding-bottom: 55px;">
+                <p class="reveal-up delay-100" style="font-size: clamp(1.2rem, 4vw, 1.4rem); font-weight: 600; font-style: italic; color: var(--gold-dark); margin-bottom: 10px;">Insyaallah acara akan dilaksanakan pada:</p>
+                <h2 class="reveal-up delay-200" style="margin-bottom: 20px;">Agenda Acara</h2>
+                <div class="reveal-zoom delay-300" style="text-align: center; margin-bottom: 30px;"><i class="fa-solid fa-ring" style="font-size: 3rem; color: var(--gold-mid);"></i></div>
 
-            <div class="event-grid">
-                <div class="glass-card event-card reveal-left delay-400 ripple-effect">
-                    <h3 style="color: var(--gold-mid); font-size: 1.4rem; font-weight: 700; margin-bottom: 15px;">Akad Nikah</h3>
-                    <p class="reveal-up"><i class="fa-regular fa-calendar-days"></i><br>Sabtu, 12 September 2026</p>
-                    <p class="reveal-up delay-100"><i class="fa-regular fa-clock"></i><br>08:00 WIB - Selesai</p>
-                    <p class="reveal-up delay-200"><i class="fa-solid fa-map-location-dot"></i><br><strong>Gedung Pertemuan Utama</strong><br>Jl. Ronggowarsito No. 12, Kota Surakarta</p>
-                </div>
+                <div class="event-grid">
+                    <div class="glass-card event-card reveal-left delay-400 ripple-effect" style="background: rgba(255, 255, 255, 0.15);">
+                        <h3 style="color: var(--gold-mid); font-size: 1.4rem; font-weight: 700; margin-bottom: 15px;">Akad Nikah</h3>
+                        <p class="reveal-up"><i class="fa-regular fa-calendar-days"></i><br>Sabtu, 12 September 2026</p>
+                        <p class="reveal-up delay-100"><i class="fa-regular fa-clock"></i><br>08:00 WIB - Selesai</p>
+                        <p class="reveal-up delay-200"><i class="fa-solid fa-map-location-dot"></i><br><strong>Gedung Pertemuan Utama</strong><br>Jl. Ronggowarsito No. 12, Kota Surakarta</p>
+                    </div>
 
-                <div class="glass-card event-card reveal-right delay-400 ripple-effect">
-                    <h3 style="color: var(--gold-mid); font-size: 1.4rem; font-weight: 700; margin-bottom: 15px;">Resepsi</h3>
-                    <p class="reveal-up"><i class="fa-regular fa-calendar-days"></i><br>Sabtu, 12 September 2026</p>
-                    <p class="reveal-up delay-100"><i class="fa-regular fa-clock"></i><br>11:00 WIB - Selesai</p>
-                    <p class="reveal-up delay-200"><i class="fa-solid fa-map-location-dot"></i><br><strong>Gedung Pertemuan Utama</strong><br>Jl. Ronggowarsito No. 12, Kota Surakarta</p>
+                    <div class="glass-card event-card reveal-right delay-400 ripple-effect" style="background: rgba(255, 255, 255, 0.15);">
+                        <h3 style="color: var(--gold-mid); font-size: 1.4rem; font-weight: 700; margin-bottom: 15px;">Resepsi</h3>
+                        <p class="reveal-up"><i class="fa-regular fa-calendar-days"></i><br>Sabtu, 12 September 2026</p>
+                        <p class="reveal-up delay-100"><i class="fa-regular fa-clock"></i><br>11:00 WIB - Selesai</p>
+                        <p class="reveal-up delay-200"><i class="fa-solid fa-map-location-dot"></i><br><strong>Gedung Pertemuan Utama</strong><br>Jl. Ronggowarsito No. 12, Kota Surakarta</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="map-preview reveal-up delay-200 ripple-effect">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.691977073289!2d112.7388722!3d-7.2754438!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a16627ad11ab1%3A0xe7fe4e0454bc3095!2sSurakarta%2C%20Surakarta%20City%2C%20Central%20Java!5e0!3m2!1sen!2sid!4v1689000000000!5m2!1sen!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                
+                <div class="map-preview reveal-up delay-200 ripple-effect">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.691977073289!2d112.7388722!3d-7.2754438!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a16627ad11ab1%3A0xe7fe4e0454bc3095!2sSurakarta%2C%20Surakarta%20City%2C%20Central%20Java!5e0!3m2!1sen!2sid!4v1689000000000!5m2!1sen!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
             </div>
         </section>
 
@@ -461,36 +464,36 @@
             <div class="glass-card reveal-up" style="margin-top: 50px;">
                 <h3 class="reveal-up" style="color: var(--gold-mid); font-weight: 700; font-size: 1.5rem; margin-bottom: 25px;">Adab Walimatul 'Ursy</h3>
                 <ul class="adab-list">
-                    <li class="reveal-left ripple-effect" style="padding:10px; border-radius:10px;">
+                    <li class="reveal-left ripple-effect">
                         <i class="fa-solid fa-envelope-open reveal-zoom delay-100"></i>
-                        <div class="adab-content">
-                            <p class="adab-arabic reveal-up">إِذَا دُعِيَ أَحَدُكُمْ إِلَى الْوَلِيمَةِ فَلْيَأْتِهَا</p>
-                            <strong class="reveal-up delay-100" style="color: var(--gold-mid); font-size: 1.05rem;">Menghadiri Undangan</strong>
-                            <p class="reveal-up delay-200" style="margin: 5px 0 0; font-size: 0.9rem; color: var(--text-muted);">"Jika salah seorang di antara kalian diundang ke acara walimah, penuhilah." (HR. Bukhari & Muslim)</p>
+                        <div class="adab-content" style="flex: 1; min-width: 0; text-align: left;">
+                            <p class="adab-arabic reveal-up" style="text-align: right; margin-top: 0; line-height: 1.6;">إِذَا دُعِيَ أَحَدُكُمْ إِلَى الْوَلِيمَةِ فَلْيَأْتِهَا</p>
+                            <strong class="reveal-up delay-100" style="color: var(--gold-mid); font-size: 1.1rem; display: block; margin-bottom: 6px;">Menghadiri Undangan</strong>
+                            <p class="reveal-up delay-200" style="margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; word-wrap: break-word;">"Jika salah seorang di antara kalian diundang ke acara walimah, penuhilah." (HR. Bukhari & Muslim)</p>
                         </div>
                     </li>
-                    <li class="reveal-right ripple-effect" style="padding:10px; border-radius:10px;">
+                    <li class="reveal-right ripple-effect">
                         <i class="fa-solid fa-hands-praying reveal-zoom delay-100"></i>
-                        <div class="adab-content">
-                            <p class="adab-arabic reveal-up">بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِى خَيْرٍ</p>
-                            <strong class="reveal-up delay-100" style="color: var(--gold-mid); font-size: 1.05rem;">Mendoakan Keberkahan</strong>
-                            <p class="reveal-up delay-200" style="margin: 5px 0 0; font-size: 0.9rem; color: var(--text-muted);">"Semoga Allah memberkahimu di waktu bahagia dan susah, serta menyatukan kalian dalam kebaikan." (HR. Abu Daud)</p>
+                        <div class="adab-content" style="flex: 1; min-width: 0; text-align: left;">
+                            <p class="adab-arabic reveal-up" style="text-align: right; margin-top: 0; line-height: 1.6;">بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِى خَيْرٍ</p>
+                            <strong class="reveal-up delay-100" style="color: var(--gold-mid); font-size: 1.1rem; display: block; margin-bottom: 6px;">Mendoakan Keberkahan</strong>
+                            <p class="reveal-up delay-200" style="margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; word-wrap: break-word;">"Semoga Allah memberkahimu di waktu bahagia dan susah, serta menyatukan kalian dalam kebaikan." (HR. Abu Daud)</p>
                         </div>
                     </li>
-                    <li class="reveal-left ripple-effect" style="padding:10px; border-radius:10px;">
+                    <li class="reveal-left ripple-effect">
                         <i class="fa-solid fa-face-smile reveal-zoom delay-100"></i>
-                        <div class="adab-content">
-                            <p class="adab-arabic reveal-up">تَبَسُّمُكَ فِى وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ</p>
-                            <strong class="reveal-up delay-100" style="color: var(--gold-mid); font-size: 1.05rem;">Turut Berbahagia</strong>
-                            <p class="reveal-up delay-200" style="margin: 5px 0 0; font-size: 0.9rem; color: var(--text-muted);">"Senyummu di hadapan saudaramu adalah sedekah." (HR. Tirmidzi). Turut memeriahkan hari kebahagiaan kami dengan senyuman tulus.</p>
+                        <div class="adab-content" style="flex: 1; min-width: 0; text-align: left;">
+                            <p class="adab-arabic reveal-up" style="text-align: right; margin-top: 0; line-height: 1.6;">تَبَسُّمُكَ فِى وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ</p>
+                            <strong class="reveal-up delay-100" style="color: var(--gold-mid); font-size: 1.1rem; display: block; margin-bottom: 6px;">Turut Berbahagia</strong>
+                            <p class="reveal-up delay-200" style="margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; word-wrap: break-word;">"Senyummu di hadapan saudaramu adalah sedekah." (HR. Tirmidzi). Turut memeriahkan hari kebahagiaan kami dengan senyuman tulus.</p>
                         </div>
                     </li>
-                    <li class="reveal-right ripple-effect" style="padding:10px; border-radius:10px;">
+                    <li class="reveal-right ripple-effect">
                         <i class="fa-solid fa-handshake-angle reveal-zoom delay-100"></i>
-                        <div class="adab-content">
-                            <p class="adab-arabic reveal-up">أَفْشُوا السَّلَامَ بَيْنَكُمْ</p>
-                            <strong class="reveal-up delay-100" style="color: var(--gold-mid); font-size: 1.05rem;">Menebarkan Salam</strong>
-                            <p class="reveal-up delay-200" style="margin: 5px 0 0; font-size: 0.9rem; color: var(--text-muted);">"Sebarkanlah salam di antara kalian." (HR. Muslim). Saling bertegur sapa dengan sesama tamu untuk mempererat tali silaturahmi.</p>
+                        <div class="adab-content" style="flex: 1; min-width: 0; text-align: left;">
+                            <p class="adab-arabic reveal-up" style="text-align: right; margin-top: 0; line-height: 1.6;">أَفْشُوا السَّلَامَ بَيْنَكُمْ</p>
+                            <strong class="reveal-up delay-100" style="color: var(--gold-mid); font-size: 1.1rem; display: block; margin-bottom: 6px;">Menebarkan Salam</strong>
+                            <p class="reveal-up delay-200" style="margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; word-wrap: break-word;">"Sebarkanlah salam di antara kalian." (HR. Muslim). Saling bertegur sapa dengan sesama tamu untuk mempererat tali silaturahmi.</p>
                         </div>
                     </li>
                 </ul>
@@ -550,19 +553,20 @@
         </section>
 
         <section id="closing">
-            <div class="glass-card reveal-up delay-100" style="margin-bottom: 40px; border: 2px solid var(--gold-mid); box-shadow: 0 15px 35px rgba(212, 175, 55, 0.2);">
-                <p style="margin: 0; font-size: 1rem; line-height: 1.8; color: var(--text-color); font-weight: 500;">Semoga Bapak/Ibu/Saudara/i Berkenan Hadir Untuk Memberikan Do'a Restu Kepada Kami.</p>
+            <div class="glass-card reveal-up delay-100" style="border: 2px solid var(--gold-mid); box-shadow: 0 15px 35px rgba(212, 175, 55, 0.2);">
+                <p style="margin: 0 0 35px 0; font-size: 1rem; line-height: 1.8; color: var(--text-color); font-weight: 500;">Semoga Bapak/Ibu/Saudara/i Berkenan Hadir Untuk Memberikan Do'a Restu Kepada Kami.</p>
+                
+                <div class="arabic reveal-zoom" style="-webkit-text-fill-color: initial; background: none; color: var(--gold-mid); font-weight: 700; margin-bottom: 40px;">وَالسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ</div>
+                
+                <h3 class="reveal-up" style="letter-spacing: 5px; font-size: clamp(0.8rem, 2.5vw, 1rem); font-weight: 600; color: var(--gold-dark); margin-bottom: 5px;">THE WEDDING OF</h3>
+                <h2 class="reveal-zoom delay-100" style="font-family:'Great Vibes'; font-size: clamp(3.2rem, 8vw, 5.8rem); margin: 0 0 20px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Sabrina & Adnan</h2>
+                
+                <div style="margin: 35px 0;">
+                    <img src="assets/img/foto-penutup.webp" alt="Closing Photo" class="cover-img reveal-up delay-200">
+                </div>
+                
+                <p class="reveal-up delay-300" style="letter-spacing: 4px; font-weight: 600; font-family:'Cinzel'; margin-top: 20px; margin-bottom: 0;">SABTU, 12 SEPTEMBER 2026</p>
             </div>
-            
-            <div class="arabic reveal-zoom" style="-webkit-text-fill-color: initial; background: none; color: var(--gold-mid); font-weight: 700; margin-bottom: 40px;">وَالسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ</div>
-            
-            <h3 class="reveal-up" style="letter-spacing: 5px; font-size: clamp(0.8rem, 2.5vw, 1rem); font-weight: 600; color: var(--gold-dark); margin-bottom: 5px;">THE WEDDING OF</h3>
-            <h2 class="reveal-zoom delay-100" style="font-family:'Great Vibes'; font-size: clamp(3.2rem, 8vw, 5.8rem); margin: 0 0 20px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Sabrina & Adnan</h2>
-            
-            <div style="margin: 35px 0;">
-                <img src="assets/img/foto-penutup.webp" alt="Closing Photo" class="cover-img reveal-up delay-200">
-            </div>
-            <p class="reveal-up delay-300" style="letter-spacing: 4px; font-weight: 600; font-family:'Cinzel'; margin-top: 20px;">SABTU, 12 SEPTEMBER 2026</p>
         </section>
 
     </div>
@@ -719,10 +723,8 @@
                 audioIcon.className = 'fas fa-volume-mute';
                 isAudioPlaying = false;
             } else {
-                // Menambahkan .catch() agar error 404 (file tidak ada di folder github) tidak memblokir kode lainnya
                 bgm.play().catch(e => {
                     console.warn("Audio tertunda/tidak ditemukan:", e);
-                    // Tetap merubah icon karena fungsinya berjalan, tapi file di server yang bermasalah
                 });
                 audioIcon.className = 'fas fa-music';
                 isAudioPlaying = true;
@@ -744,7 +746,6 @@
             }
             if(window.rsvpChart && window.rsvpChart.options) {
                 const isDark = htmlTag.getAttribute('data-theme') === 'dark';
-                // Update chart label colors dynamically based on theme
                 window.rsvpChart.options.scales.x.ticks.color = isDark ? '#D1D5DB' : '#262626';
                 window.rsvpChart.options.scales.y.ticks.color = isDark ? '#D1D5DB' : '#262626';
                 window.rsvpChart.update();
@@ -785,14 +786,12 @@
             document.getElementById('floating-widget').style.bottom = "85px";
 
             revealEntries(); 
-            // Menambahkan error handle disini juga untuk menutupi 404 dari github pages
             bgm.play().catch(e => {
                 console.warn("Audio otomatis gagal/file audio 404 dari server GitHub", e);
             });
             isAudioPlaying = true;
             audioIcon.className = 'fas fa-music';
 
-            // Trigger log visit to Firebase (Catatan No. 8)
             if(window.trackGuestOpen) {
                 window.trackGuestOpen();
             }
@@ -851,15 +850,13 @@
         const statusCollection = collection(db, 'rsvp_status');
         const commentsCollection = collection(db, 'rsvp_comments');
 
-        // FUNGSI TRACKING OPEN INVITATION (Catatan No. 8)
         window.trackGuestOpen = async function() {
             try {
-                // Menyimpan data "telah membuka" ke Firestore. Bisa dibuat ke collection khusus 'guest_visits' atau disatukan ke 'rsvp_status'.
                 await setDoc(doc(db, "guest_visits", guestDocId), {
                     name: document.getElementById('rsvp-name').value,
                     hasOpened: true,
                     openedAt: serverTimestamp()
-                }, { merge: true }); // Menggunakan merge agar tidak menimpa data lama jika sudah ada
+                }, { merge: true });
             } catch (err) {
                 console.error("Gagal mencatat status visit:", err);
             }
@@ -868,7 +865,6 @@
         const ctx = document.getElementById('rsvpChart').getContext('2d');
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
         
-        // MODIFIKASI CHARTJS (Catatan No. 3) - Bar vertikal (Keterangan di bawah, Persentase di kiri)
         window.rsvpChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -879,11 +875,10 @@
                     borderColor: ['transparent', 'transparent', '#D4AF37'],
                     borderWidth: 1,
                     borderRadius: 8,
-                    barThickness: 40 // Disesuaikan agar lebih proporsional untuk grafik vertikal
+                    barThickness: 40 
                 }]
             },
             options: {
-                // Menghapus indexAxis: 'y' untuk mengubah orientasi menjadi bar chart normal (vertikal)
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
