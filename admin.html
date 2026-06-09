@@ -6,7 +6,7 @@
     <title>Sistem Admin Manajemen Tamu - Sabrina & Adnan</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=600;700&family=Montserrat:wght=400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -72,6 +72,10 @@
                             <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Lokasi / Kota Domisili</label>
                             <input type="text" id="inputLocation" placeholder="Contoh: Surakarta" class="w-full p-3 bg-zinc-900/60 border border-zinc-700 rounded-xl focus:outline-none focus:border-amber-400 text-white placeholder-zinc-600 transition" required>
                         </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Nomor WhatsApp (Opsional)</label>
+                            <input type="tel" id="inputWhatsApp" placeholder="Contoh: 081234567890" class="w-full p-3 bg-zinc-900/60 border border-zinc-700 rounded-xl focus:outline-none focus:border-amber-400 text-white placeholder-zinc-600 transition">
+                        </div>
                         <button type="submit" class="gold-gradient text-slate-950 font-bold py-3 rounded-xl hover:opacity-90 active:scale-95 transition tracking-wider text-sm mt-2 shadow-lg shadow-amber-500/10">
                             <i class="fa-solid fa-cloud-arrow-up mr-1"></i> SIMPAN KE SERVER
                         </button>
@@ -82,7 +86,7 @@
                     <h2 class="text-lg font-bold text-amber-400 mb-2 flex items-center gap-2 font-royal">
                         <i class="fa-solid fa-file-excel text-sm"></i> Import Massal Excel
                     </h2>
-                    <p class="text-xs text-zinc-400 mb-4 leading-relaxed">Unggah berkas spreadsheet dengan struktur kolom header <span class="text-amber-300 font-semibold">"Nama Tamu"</span> dan <span class="text-amber-300 font-semibold">"Lokasi"</span>.</p>
+                    <p class="text-xs text-zinc-400 mb-4 leading-relaxed">Unggah berkas spreadsheet dengan struktur kolom header <span class="text-amber-300 font-semibold">"Nama Tamu"</span>, <span class="text-amber-300 font-semibold">"Lokasi"</span>, dan <span class="text-amber-300 font-semibold">"WhatsApp"</span> (opsional).</p>
                     
                     <div class="border-2 border-dashed border-zinc-700 rounded-xl p-4 text-center hover:border-amber-400/60 transition cursor-pointer relative bg-zinc-900/30">
                         <input type="file" id="excelFile" accept=".xlsx, .xls, .csv" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
@@ -111,10 +115,10 @@
                         <table class="w-full text-left border-collapse min-w-[700px]">
                             <thead>
                                 <tr class="bg-zinc-900/90 text-zinc-400 text-[11px] font-bold uppercase tracking-wider border-b border-zinc-800">
-                                    <th class="p-4 w-[30%]">Identitas Tamu</th>
-                                    <th class="p-4 w-[25%]">Asal Domisili</th>
+                                    <th class="p-4 w-[25%]">Identitas Tamu</th>
+                                    <th class="p-4 w-[20%]">Asal Domisili</th>
                                     <th class="p-4 w-[20%] text-center">Status Akses</th>
-                                    <th class="p-4 w-[25%] text-right">Aksi & Tautan Khusus</th>
+                                    <th class="p-4 w-[35%] text-right">Aksi & Tautan Khusus</th>
                                 </tr>
                             </thead>
                             <tbody id="guestTableBody" class="text-xs divide-y divide-zinc-900">
@@ -177,22 +181,19 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
-        // Referensi Koleksi Baru
         const guestsCollection = collection(db, 'registered_guests');
         const commentsCollection = collection(db, 'rsvp_comments');
-        const visitsCollection = collection(db, 'guest_visits'); // Tabel Tracking Status
+        const visitsCollection = collection(db, 'guest_visits');
 
-        // State Penyimpanan Data Lokal
         let localCacheGuests = [];
-        let visitsMap = {}; // Penyimpanan status buka tiap tamu
+        let visitsMap = {};
 
         const getBaseInvitationUrl = () => {
             const currentPath = window.location.pathname;
             const dir = currentPath.substring(0, currentPath.lastIndexOf('/'));
-            return `${window.location.origin}${dir}/index.html`; // Sesuaikan path jika nama file utamanya bukan index.html
+            return `${window.location.origin}${dir}/index.html`;
         };
 
-        // GLOBAL NOTIFICATION ALERT
         window.showNotification = (type, title, message) => {
             const modal = document.getElementById('notifyModal');
             const icon = document.getElementById('notifyIcon');
@@ -222,7 +223,18 @@
             return `${getBaseInvitationUrl()}?to=${encodeURIComponent(cleanName)}__${encodeURIComponent(cleanLoc)}`;
         };
 
-        // Update Statistik Dinamis
+        // Format nomor agar valid untuk API WhatsApp (mengubah 08 menjadi 628)
+        const formatWhatsAppNumber = (phone) => {
+            if (!phone) return "";
+            let cleaned = phone.replace(/\D/g, ''); // bersihkan karakter non-angka
+            if (cleaned.startsWith('0')) {
+                cleaned = '62' + cleaned.slice(1);
+            } else if (cleaned.startsWith('8')) {
+                cleaned = '62' + cleaned;
+            }
+            return cleaned;
+        };
+
         function updateStats() {
             let openedCount = 0;
             localCacheGuests.forEach(g => {
@@ -234,9 +246,7 @@
             document.getElementById('counter-opened').innerText = openedCount;
         }
 
-        // ============================================================================
-        // 1. SISTEM PELACAKAN AKSES (GUEST VISITS) - FITUR BARU
-        // ============================================================================
+        // 1. SISTEM PELACAKAN AKSES
         onSnapshot(visitsCollection, (snapshot) => {
             visitsMap = {};
             snapshot.forEach(doc => {
@@ -245,15 +255,11 @@
                     visitsMap[data.name.toLowerCase()] = true;
                 }
             });
-            // Update table dan stats setiap ada yang buka undangan
             renderTable(localCacheGuests);
             updateStats();
         });
 
-
-        // ============================================================================
         // 2. SISTEM MANAJEMEN TAMU (BACA & HAPUS)
-        // ============================================================================
         onSnapshot(guestsCollection, (snapshot) => {
             localCacheGuests = [];
             snapshot.forEach((doc) => {
@@ -277,21 +283,40 @@
                 const generatedLink = generateInvitationLink(guest.name, guest.location);
                 const guestKey = guest.name.toLowerCase();
                 const hasOpened = visitsMap[guestKey] === true;
+                const rawWhatsApp = guest.whatsapp || "";
+                const formattedWA = formatWhatsAppNumber(rawWhatsApp);
                 
-                // Menentukan Badge Status Akses
                 const statusBadge = hasOpened 
                     ? `<span class="bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.05)]"><i class="fa-solid fa-check-double mr-1"></i> Telah Dibuka</span>` 
                     : `<span class="bg-zinc-800 text-zinc-400 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-zinc-700"><i class="fa-solid fa-envelope mr-1"></i> Belum Dibuka</span>`;
+
+                // Set up teks pesan WhatsApp template royal template
+                const messageText = `Halo *${guest.name}*,\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan *Sabrina & Adnan*.\n\nBerikut tautan undangan digital khusus Anda:\n${generatedLink}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir. Terima kasih.`;
+                const waUrl = `https://api.whatsapp.com/send?phone=${formattedWA}&text=${encodeURIComponent(messageText)}`;
 
                 const tableRow = document.createElement('tr');
                 tableRow.className = "hover:bg-zinc-900/40 transition group border-b border-zinc-900";
                 
                 tableRow.innerHTML = `
-                    <td class="p-4 font-medium text-white group-hover:text-amber-300 transition">${guest.name}</td>
+                    <td class="p-4 font-medium text-white group-hover:text-amber-300 transition">
+                        <div>${guest.name}</div>
+                        ${rawWhatsApp ? `<div class="text-[10px] text-zinc-500 mt-0.5"><i class="fa-brands fa-whatsapp text-emerald-500"></i> ${rawWhatsApp}</div>` : ''}
+                    </td>
                     <td class="p-4 text-zinc-400">${guest.location}</td>
                     <td class="p-4 text-center">${statusBadge}</td>
                     <td class="p-4 text-right flex justify-end items-center gap-2">
-                        <input type="text" value="${generatedLink}" readonly class="bg-zinc-950 border border-zinc-800 rounded-lg p-1.5 text-[10px] text-zinc-400 w-48 focus:outline-none hidden xl:inline-block">
+                        <input type="text" value="${generatedLink}" readonly class="bg-zinc-950 border border-zinc-800 rounded-lg p-1.5 text-[10px] text-zinc-400 w-40 focus:outline-none hidden xl:inline-block">
+                        
+                        ${formattedWA ? `
+                        <a href="${waUrl}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white p-2 rounded-lg transition-all flex items-center gap-1.5 active:scale-90" title="Kirim Tautan via WhatsApp">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                        </a>
+                        ` : `
+                        <button class="bg-zinc-800 text-zinc-600 p-2 rounded-lg cursor-not-allowed" title="Nomor WA tidak tersedia" disabled>
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                        </button>
+                        `}
+
                         <button class="copy-btn bg-zinc-900 hover:bg-amber-400 hover:text-slate-950 border border-zinc-700 hover:border-amber-400 p-2 rounded-lg transition-all text-zinc-300 flex items-center gap-1.5 active:scale-90" data-link="${generatedLink}" title="Salin Tautan">
                             <i class="fa-regular fa-copy"></i>
                         </button>
@@ -331,9 +356,7 @@
             }
         });
 
-        // ============================================================================
         // 3. SISTEM MODERASI UCAPAN & DOA
-        // ============================================================================
         const qComments = query(commentsCollection, orderBy("timestamp", "desc"));
         onSnapshot(qComments, (snapshot) => {
             const container = document.getElementById('commentsContainer');
@@ -385,16 +408,16 @@
             }
         });
 
-        // ============================================================================
         // 4. INPUT MANUAL & EXCEL SCRIPT
-        // ============================================================================
         document.getElementById('manualForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const nameField = document.getElementById('inputName');
             const locField = document.getElementById('inputLocation');
+            const waField = document.getElementById('inputWhatsApp');
             
             const rawName = nameField.value.trim();
             const rawLoc = locField.value.trim();
+            const rawWA = waField.value.trim();
 
             const isDuplicate = localCacheGuests.some(g => 
                 g.name.toLowerCase() === rawName.toLowerCase() && 
@@ -412,11 +435,13 @@
                 await setDoc(doc(db, "registered_guests", customDocId), {
                     name: rawName,
                     location: rawLoc,
+                    whatsapp: rawWA,
                     timestamp: serverTimestamp ? serverTimestamp() : new Date().toISOString()
                 });
 
                 nameField.value = '';
                 locField.value = '';
+                waField.value = '';
                 window.showNotification('success', 'Penyimpanan Sukses', 'Identitas tamu berhasil diregistrasi ke sistem Cloud.');
             } catch (err) {
                 console.error(err);
@@ -466,6 +491,7 @@
                     for (const row of jsonData) {
                         const excelName = row['Nama Tamu'] ? String(row['Nama Tamu']).trim() : "";
                         const excelLoc = row['Lokasi'] ? String(row['Lokasi']).trim() : "";
+                        const excelWA = row['WhatsApp'] ? String(row['WhatsApp']).trim() : "";
 
                         if(!excelName || !excelLoc) {
                             skippedCount++;
@@ -487,6 +513,7 @@
                         await setDoc(doc(db, "registered_guests", generatedDocId), {
                             name: excelName,
                             location: excelLoc,
+                            whatsapp: excelWA,
                             timestamp: new Date().toISOString()
                         });
                         addedCount++;
