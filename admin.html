@@ -29,7 +29,7 @@
         <header class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 pb-6 border-b border-zinc-800">
             <div>
                 <h1 class="font-royal text-2xl md:text-3xl text-amber-400 tracking-wider">PANEL KONTROL KERAJAAN</h1>
-                <p class="text-xs md:text-sm text-zinc-400 mt-1">Sistem Manajemen Distribusi Tautan Undangan Sabrina & Adnan</p>
+                <p class="text-xs md:text-sm text-zinc-400 mt-1">Sistem Manajemen Distribusi & Moderasi Sabrina & Adnan</p>
             </div>
             <div class="glass-panel py-3 px-6 rounded-2xl flex items-center gap-4 w-full md:w-auto shadow-xl">
                 <div class="w-12 h-12 rounded-xl gold-gradient flex items-center justify-center text-slate-950 text-xl font-bold">
@@ -82,8 +82,8 @@
                 </section>
             </div>
 
-            <div class="lg:col-span-8">
-                <section class="glass-panel p-6 rounded-2xl shadow-lg h-full flex flex-col">
+            <div class="lg:col-span-8 flex flex-col gap-6">
+                <section class="glass-panel p-6 rounded-2xl shadow-lg flex-1 flex flex-col">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                         <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2 font-royal">
                             <i class="fa-solid fa-address-book text-sm"></i> Basis Data Undangan Terdistribusi
@@ -94,13 +94,13 @@
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto flex-1 bg-zinc-950/40 rounded-xl border border-zinc-800 max-h-[520px]">
+                    <div class="overflow-x-auto flex-1 bg-zinc-950/40 rounded-xl border border-zinc-800 max-h-[400px]">
                         <table class="w-full text-left border-collapse min-w-[600px]">
                             <thead>
                                 <tr class="bg-zinc-900/90 text-zinc-400 text-[11px] font-bold uppercase tracking-wider border-b border-zinc-800">
                                     <th class="p-4 w-2/5">Identitas Tamu</th>
                                     <th class="p-4 w-1/5">Asal Domisili</th>
-                                    <th class="p-4 w-2/5 text-right">Tautan Akses Spesifik</th>
+                                    <th class="p-4 w-2/5 text-right">Aksi & Tautan Khusus</th>
                                 </tr>
                             </thead>
                             <tbody id="guestTableBody" class="text-xs divide-y divide-zinc-900">
@@ -108,13 +108,30 @@
                                     <td colspan="3" class="p-8 text-center text-zinc-500">
                                         <i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Sinkronisasi database Cloud Firestore...
                                     </td>
-                                    <td class="hidden"></td><td class="hidden"></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </section>
             </div>
+            
+            <div class="lg:col-span-12">
+                <section class="glass-panel p-6 rounded-2xl shadow-lg">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2 font-royal">
+                            <i class="fa-solid fa-comments text-sm"></i> Moderasi Ucapan & Doa Tamu
+                        </h2>
+                        <div class="text-xs text-zinc-400 bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-700">
+                            Total: <span id="counter-comments" class="font-bold text-white">0</span> Doa
+                        </div>
+                    </div>
+                    
+                    <div id="commentsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[400px] overflow-y-auto pr-2">
+                        <p class="text-zinc-500 text-sm col-span-full text-center py-8"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Memuat daftar ucapan...</p>
+                    </div>
+                </section>
+            </div>
+
         </main>
     </div>
 
@@ -131,9 +148,9 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // Konfigurasi Firebase Anda (Disinkronkan dengan Modul Undangan)
+        // Konfigurasi Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBKYztNuwvRKsMKLyOtEUmFsMSomGX-WAQ",
             authDomain: "undangansabrinaadnan.firebaseapp.com",
@@ -146,19 +163,22 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        
+        // Referensi Koleksi
         const guestsCollection = collection(db, 'registered_guests');
+        const commentsCollection = collection(db, 'rsvp_comments');
 
-        // State Penyimpanan Data di Memori Lokal (Untuk Kecepatan Search & Validasi Duplikasi)
+        // State Penyimpanan Data Lokal
         let localCacheGuests = [];
 
-        // Menentukan Alamat Utama Undangan secara Dinamis (Mendukung localhost maupun hosting)
+        // Menentukan Alamat Utama Undangan secara Dinamis
         const getBaseInvitationUrl = () => {
             const currentPath = window.location.pathname;
             const dir = currentPath.substring(0, currentPath.lastIndexOf('/'));
             return `${window.location.origin}${dir}/index.html`;
         };
 
-        // GLOBAL NOTIFICATION ALERT FUNCTION SYSTEM
+        // GLOBAL NOTIFICATION ALERT
         window.showNotification = (type, title, message) => {
             const modal = document.getElementById('notifyModal');
             const icon = document.getElementById('notifyIcon');
@@ -182,33 +202,33 @@
             document.getElementById('notifyModal').classList.replace('flex', 'hidden');
         };
 
-        // ARSITEKTUR MEMBANGUN UNTUK GENERATE TAUTAN UNIK (SPASI DIUBAH MENJADI UNDERSCORE)
-        // BUG FIX: Karakter % diubah menjadi __ agar link WhatsApp tidak terputus
+        // GENERATE TAUTAN UNDANGAN
         const generateInvitationLink = (name, location) => {
             const cleanName = name.trim().replace(/\s+/g, '_');
             const cleanLoc = location.trim().replace(/\s+/g, '_');
             return `${getBaseInvitationUrl()}?to=${encodeURIComponent(cleanName)}__${encodeURIComponent(cleanLoc)}`;
         };
 
-        // REALTIME SYNCHRONIZATION STREAMING DATA FIRESTORE
+        // ============================================================================
+        // 1. SISTEM MANAJEMEN TAMU (BACA & HAPUS)
+        // ============================================================================
         onSnapshot(guestsCollection, (snapshot) => {
             localCacheGuests = [];
             snapshot.forEach((doc) => {
-                localCacheGuests.push(doc.data());
+                // Menyimpan ID Dokumen untuk keperluan penghapusan
+                localCacheGuests.push({ id: doc.id, ...doc.data() }); 
             });
             
-            // Perbarui Counter Angka Total Tamu Undangan
             document.getElementById('counter-total').innerText = localCacheGuests.length;
             renderTable(localCacheGuests);
         });
 
-        // FUNGSI RENDER TABEL UTAMA DISERTAI TOMBOL COPY
         function renderTable(dataList) {
             const tbody = document.getElementById('guestTableBody');
             tbody.innerHTML = '';
 
             if (dataList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" class="p-8 text-center text-zinc-600">Tidak ada data tamu undangan ditemukan.</td><td class="hidden"></td><td class="hidden"></td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" class="p-8 text-center text-zinc-600">Tidak ada data tamu undangan ditemukan.</td></tr>';
                 return;
             }
 
@@ -223,27 +243,107 @@
                     <td class="p-4 text-right flex justify-end items-center gap-2">
                         <input type="text" value="${generatedLink}" readonly class="bg-zinc-950 border border-zinc-800 rounded-lg p-1.5 text-[10px] text-zinc-400 w-48 focus:outline-none hidden sm:inline-block">
                         <button class="copy-btn bg-zinc-900 hover:bg-amber-400 hover:text-slate-950 border border-zinc-700 hover:border-amber-400 p-2 rounded-lg transition-all text-zinc-300 flex items-center gap-1.5 active:scale-90" data-link="${generatedLink}">
-                            <i class="fa-regular fa-copy"></i> <span class="text-[10px] font-semibold tracking-wider">SALIN</span>
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                        <button class="delete-guest-btn bg-zinc-900 hover:bg-rose-500 hover:text-white border border-zinc-700 hover:border-rose-500 p-2 rounded-lg transition-all text-rose-500 flex items-center gap-1.5 active:scale-90" data-id="${guest.id}" data-name="${guest.name}">
+                            <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
                 `;
                 tbody.appendChild(tableRow);
             });
-
-            // Daftarkan Trigger Event Listener Klik Untuk Seluruh Tombol Salin
-            document.querySelectorAll('.copy-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const linkText = this.getAttribute('data-link');
-                    navigator.clipboard.writeText(linkText).then(() => {
-                        const originalContent = this.innerHTML;
-                        this.innerHTML = '<i class="fa-solid fa-check text-emerald-500"></i> <span class="text-[10px] text-emerald-500 font-bold">SALIN</span>';
-                        setTimeout(() => { this.innerHTML = originalContent; }, 1500);
-                    });
-                });
-            });
         }
 
-        // AKSI SUBMIT FORM ENTRI SECARA MANUAL WITH DUPLICATE BLOCKER ENGINE
+        // DELEGASI EVENT UNTUK TOMBOL DI DALAM TABEL (COPY & DELETE)
+        document.getElementById('guestTableBody').addEventListener('click', async (e) => {
+            // Aksi Copy Link
+            const copyBtn = e.target.closest('.copy-btn');
+            if(copyBtn) {
+                const linkText = copyBtn.getAttribute('data-link');
+                navigator.clipboard.writeText(linkText).then(() => {
+                    const originalContent = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-500"></i>';
+                    setTimeout(() => { copyBtn.innerHTML = originalContent; }, 1500);
+                });
+            }
+
+            // Aksi Delete Tamu (FITUR BARU)
+            const deleteBtn = e.target.closest('.delete-guest-btn');
+            if(deleteBtn) {
+                const id = deleteBtn.getAttribute('data-id');
+                const name = deleteBtn.getAttribute('data-name');
+                if(confirm(`PERINGATAN!\n\nApakah Anda yakin ingin menghapus "${name}" dari daftar tamu? Tautan yang sudah terlanjur disebar untuk tamu ini tidak akan menampilkan namanya lagi.`)) {
+                    try {
+                        await deleteDoc(doc(db, "registered_guests", id));
+                        window.showNotification('success', 'Tamu Dihapus', `Data tamu bernama ${name} berhasil dihapus dari sistem.`);
+                    } catch (error) {
+                        window.showNotification('error', 'Gagal Menghapus', 'Terjadi kesalahan saat menghapus data di database.');
+                    }
+                }
+            }
+        });
+
+        // ============================================================================
+        // 2. SISTEM MODERASI UCAPAN & DOA (FITUR BARU)
+        // ============================================================================
+        const qComments = query(commentsCollection, orderBy("timestamp", "desc"));
+        onSnapshot(qComments, (snapshot) => {
+            const container = document.getElementById('commentsContainer');
+            container.innerHTML = '';
+            document.getElementById('counter-comments').innerText = snapshot.size;
+
+            if(snapshot.empty) {
+                container.innerHTML = '<p class="text-zinc-500 text-sm col-span-full text-center py-8">Belum ada ucapan yang masuk dari tamu.</p>';
+                return;
+            }
+
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const id = docSnap.id;
+                
+                // Menentukan warna badge berdasarkan kehadiran
+                let badgeClass = "bg-zinc-700 text-zinc-300";
+                if(data.status === "Hadir") badgeClass = "bg-emerald-500/20 text-emerald-400";
+                if(data.status === "Tidak Hadir") badgeClass = "bg-rose-500/20 text-rose-400";
+                if(data.status === "Ragu-ragu") badgeClass = "bg-amber-500/20 text-amber-400";
+
+                container.innerHTML += `
+                    <div class="bg-zinc-900/60 border border-zinc-800 rounded-xl p-4 flex flex-col justify-between relative group hover:border-zinc-600 transition">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-amber-300 font-bold text-sm">${data.name}</h4>
+                                <span class="text-[10px] px-2 py-1 rounded-md font-semibold tracking-wide ${badgeClass}">${data.status}</span>
+                            </div>
+                            <p class="text-zinc-300 text-xs italic mb-4 leading-relaxed">"${data.message}"</p>
+                        </div>
+                        <button class="delete-comment-btn absolute bottom-3 right-3 text-[11px] bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white px-2 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all font-semibold" data-id="${id}" data-name="${data.name}">
+                            <i class="fa-solid fa-trash mr-1"></i> HAPUS
+                        </button>
+                    </div>
+                `;
+            });
+        });
+
+        // DELEGASI EVENT UNTUK TOMBOL HAPUS UCAPAN
+        document.getElementById('commentsContainer').addEventListener('click', async (e) => {
+            const deleteBtn = e.target.closest('.delete-comment-btn');
+            if(deleteBtn) {
+                const id = deleteBtn.getAttribute('data-id');
+                const name = deleteBtn.getAttribute('data-name');
+                if(confirm(`Yakin ingin menghapus ucapan dari "${name}"? Ucapan ini akan hilang secara real-time dari website utama.`)) {
+                    try {
+                        await deleteDoc(doc(db, "rsvp_comments", id));
+                        // Tidak perlu notifikasi sukses mengganggu flow jika sering hapus spam, biarkan silent/realtime
+                    } catch (error) {
+                        window.showNotification('error', 'Gagal Menghapus', 'Terjadi kesalahan saat menghapus komentar.');
+                    }
+                }
+            }
+        });
+
+        // ============================================================================
+        // 3. INPUT MANUAL & EXCEL SCRIPT
+        // ============================================================================
         document.getElementById('manualForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const nameField = document.getElementById('inputName');
@@ -252,22 +352,16 @@
             const rawName = nameField.value.trim();
             const rawLoc = locField.value.trim();
 
-            // Algoritma Proteksi Pencegahan Data Ganda / Identik
             const isDuplicate = localCacheGuests.some(g => 
                 g.name.toLowerCase() === rawName.toLowerCase() && 
                 g.location.toLowerCase() === rawLoc.toLowerCase()
             );
 
             if(isDuplicate) {
-                window.showNotification(
-                    'error', 
-                    'Gagal Mengirim Ke Server', 
-                    `Entri dibatalkan karena nama tamu "${rawName}" dengan asal domisili "${rawLoc}" sudah terdaftar di dalam sistem.`
-                );
+                window.showNotification('error', 'Gagal Mengirim Ke Server', `Entri dibatalkan karena nama tamu "${rawName}" dengan asal domisili "${rawLoc}" sudah terdaftar di dalam sistem.`);
                 return;
             }
 
-            // Membuat ID Unik Gabungan yang Valid untuk Penamaan Dokumen
             const customDocId = btoa(encodeURIComponent(`${rawName}_${rawLoc}`)).replace(/=/g, '');
 
             try {
@@ -286,7 +380,6 @@
             }
         });
 
-        // SEARCH BAR INPUT FILTER IMPLEMENTATION ENGINE
         document.getElementById('searchBar').addEventListener('input', function() {
             const keyword = this.value.toLowerCase().trim();
             const filteredResults = localCacheGuests.filter(g => 
@@ -296,7 +389,6 @@
             renderTable(filteredResults);
         });
 
-        // PARSING MASSAL DATA EXCEL DENGAN STRUKTUR VALIDASI YANG KETAT
         document.getElementById('excelFile').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if(!file) return;
@@ -318,21 +410,15 @@
                         return;
                     }
 
-                    // Pengkondisian Validasi Struktur Kolom Excel
                     const sampleRow = jsonData[0];
                     if(!sampleRow.hasOwnProperty('Nama Tamu') || !sampleRow.hasOwnProperty('Lokasi')) {
-                        window.showNotification(
-                            'error', 
-                            'Format Berkas Salah', 
-                            'Gagal memproses file. Pastikan struktur baris tajuk / header kolom utama bertuliskan "Nama Tamu" dan "Lokasi" dengan ejaan yang tepat.'
-                        );
+                        window.showNotification('error', 'Format Berkas Salah', 'Gagal memproses file. Pastikan struktur baris tajuk / header kolom utama bertuliskan "Nama Tamu" dan "Lokasi" dengan ejaan yang tepat.');
                         return;
                     }
 
                     let addedCount = 0;
                     let skippedCount = 0;
 
-                    // Eksekusi Pemindaian Dan Loop Batch Upload Injection
                     for (const row of jsonData) {
                         const excelName = row['Nama Tamu'] ? String(row['Nama Tamu']).trim() : "";
                         const excelLoc = row['Lokasi'] ? String(row['Lokasi']).trim() : "";
@@ -342,7 +428,6 @@
                             continue;
                         }
 
-                        // Deteksi Duplikasi di Sektor File Loop Excel
                         const isExist = localCacheGuests.some(g => 
                             g.name.toLowerCase() === excelName.toLowerCase() && 
                             g.location.toLowerCase() === excelLoc.toLowerCase()
@@ -363,17 +448,13 @@
                         addedCount++;
                     }
 
-                    window.showNotification(
-                        'success', 
-                        'Proses Import Selesai', 
-                        `Berhasil menyuntikkan ${addedCount} data tamu baru. Berhasil melewati ${skippedCount} entri kosong atau data ganda.`
-                    );
+                    window.showNotification('success', 'Proses Import Selesai', `Berhasil menyuntikkan ${addedCount} data tamu baru. Berhasil melewati ${skippedCount} entri kosong atau data ganda.`);
 
                 } catch (err) {
                     console.error(err);
                     window.showNotification('error', 'Kerusakan Struktur', 'Gagal membaca isi dokumen. Pastikan file tidak terkunci enkripsi atau rusak.');
                 } finally {
-                    document.getElementById('excelFile').value = ''; // Reset input file
+                    document.getElementById('excelFile').value = ''; 
                 }
             };
 
