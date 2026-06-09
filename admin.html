@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Admin Manajemen Tamu - Sabrina & Adnan</title>
     
-    <!-- Tailwind CSS untuk Desain Premium & Responsif -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- SheetJS untuk Parsing File Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <style>
@@ -28,13 +26,11 @@
 <body class="p-4 md:p-8 min-h-screen">
 
     <div class="max-w-7xl mx-auto">
-        <!-- HEADER UTAMA -->
         <header class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 pb-6 border-b border-zinc-800">
             <div>
                 <h1 class="font-royal text-2xl md:text-3xl text-amber-400 tracking-wider">PANEL KONTROL KERAJAAN</h1>
                 <p class="text-xs md:text-sm text-zinc-400 mt-1">Sistem Manajemen Distribusi Tautan Undangan Sabrina & Adnan</p>
             </div>
-            <!-- CARD TOTAL TAMU -->
             <div class="glass-panel py-3 px-6 rounded-2xl flex items-center gap-4 w-full md:w-auto shadow-xl">
                 <div class="w-12 h-12 rounded-xl gold-gradient flex items-center justify-center text-slate-950 text-xl font-bold">
                     <i class="fa-solid fa-users"></i>
@@ -46,13 +42,10 @@
             </div>
         </header>
 
-        <!-- GRID INTERFASE UTAMA -->
         <main class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- KOLOM KIRI: INPUT FORM MANUAL & EXCEL -->
             <div class="lg:col-span-4 flex flex-col gap-6">
                 
-                <!-- FORM 1: ENTRI TAMU MANUAL -->
                 <section class="glass-panel p-6 rounded-2xl shadow-lg">
                     <h2 class="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2 font-royal">
                         <i class="fa-solid fa-user-plus text-sm"></i> Entri Manual Tamu
@@ -72,7 +65,6 @@
                     </form>
                 </section>
 
-                <!-- FORM 2: IMPORT MASSAL EXCEL -->
                 <section class="glass-panel p-6 rounded-2xl shadow-lg">
                     <h2 class="text-lg font-bold text-amber-400 mb-2 flex items-center gap-2 font-royal">
                         <i class="fa-solid fa-file-excel text-sm"></i> Import Massal Excel
@@ -90,21 +82,18 @@
                 </section>
             </div>
 
-            <!-- KOLOM KANAN: DATABASE VIEWER TABLE -->
             <div class="lg:col-span-8">
                 <section class="glass-panel p-6 rounded-2xl shadow-lg h-full flex flex-col">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                         <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2 font-royal">
                             <i class="fa-solid fa-address-book text-sm"></i> Basis Data Undangan Terdistribusi
                         </h2>
-                        <!-- PENCARIAN TAMU -->
                         <div class="relative w-full sm:w-64">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-xs text-zinc-500"></i>
                             <input type="text" id="searchBar" placeholder="Cari nama tamu..." class="w-full pl-9 pr-4 py-2.5 bg-zinc-900/80 border border-zinc-700 rounded-xl focus:outline-none focus:border-amber-400 text-xs text-white placeholder-zinc-500 transition">
                         </div>
                     </div>
 
-                    <!-- TABEL RESPONSIVE CONTAINER -->
                     <div class="overflow-x-auto flex-1 bg-zinc-950/40 rounded-xl border border-zinc-800 max-h-[520px]">
                         <table class="w-full text-left border-collapse min-w-[600px]">
                             <thead>
@@ -129,7 +118,6 @@
         </main>
     </div>
 
-    <!-- WIDGET MODAL POPUP NOTIFIKASI CUSTOM (USER FRIENDLY) -->
     <div id="notifyModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
         <div class="bg-zinc-900 border border-zinc-800 max-w-sm w-full rounded-2xl p-6 text-center shadow-2xl scale-95 transition-all duration-300">
             <div id="notifyIcon" class="text-5xl mb-4"></div>
@@ -141,9 +129,6 @@
         </div>
     </div>
 
-    <!-- ==========================================================================
-       LOGIK CORE SYSTEM ENGINE (FIREBASE V10 MANAGEMENT)
-       ========================================================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, onSnapshot, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -198,10 +183,11 @@
         };
 
         // ARSITEKTUR MEMBANGUN UNTUK GENERATE TAUTAN UNIK (SPASI DIUBAH MENJADI UNDERSCORE)
+        // BUG FIX: Karakter % diubah menjadi __ agar link WhatsApp tidak terputus
         const generateInvitationLink = (name, location) => {
             const cleanName = name.trim().replace(/\s+/g, '_');
             const cleanLoc = location.trim().replace(/\s+/g, '_');
-            return `${getBaseInvitationUrl()}?to=${encodeURIComponent(cleanName)}%${encodeURIComponent(cleanLoc)}`;
+            return `${getBaseInvitationUrl()}?to=${encodeURIComponent(cleanName)}__${encodeURIComponent(cleanLoc)}`;
         };
 
         // REALTIME SYNCHRONIZATION STREAMING DATA FIRESTORE
