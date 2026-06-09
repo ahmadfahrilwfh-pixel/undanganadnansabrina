@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>The Wedding of Sabrina & Adnan</title>
     
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -147,13 +149,14 @@
             position: relative; overflow: hidden; width: 100%; box-sizing: border-box;
         }
 
-        /* Box Cover Khusus (Catatan No. 1) */
+        /* Box Cover Khusus - Animasi masuk independen tanpa IntersectionObserver */
         .cover-box {
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 24px; padding: 40px 20px; max-width: 500px; width: 100%;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            animation: modalPop 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         [data-theme="dark"] .cover-box { background: rgba(18, 18, 20, 0.45); border: 1px solid rgba(212, 175, 55, 0.3); }
 
@@ -317,7 +320,7 @@
     <div id="petal-container"></div>
 
     <div id="cover">
-        <div class="cover-box reveal-up">
+        <div class="cover-box">
             <h3 style="letter-spacing: 5px; font-size: clamp(0.8rem, 2.5vw, 1rem); font-weight: 600; color: var(--gold-dark);">THE WEDDING OF</h3>
             <h1 class="title-names" style="margin: 5px 0;">Sabrina & Adnan</h1>
             
@@ -716,7 +719,11 @@
                 audioIcon.className = 'fas fa-volume-mute';
                 isAudioPlaying = false;
             } else {
-                bgm.play().catch(e => console.log("Interaksi diblokir"));
+                // Menambahkan .catch() agar error 404 (file tidak ada di folder github) tidak memblokir kode lainnya
+                bgm.play().catch(e => {
+                    console.warn("Audio tertunda/tidak ditemukan:", e);
+                    // Tetap merubah icon karena fungsinya berjalan, tapi file di server yang bermasalah
+                });
                 audioIcon.className = 'fas fa-music';
                 isAudioPlaying = true;
             }
@@ -778,10 +785,12 @@
             document.getElementById('floating-widget').style.bottom = "85px";
 
             revealEntries(); 
-            bgm.play().then(() => {
-                isAudioPlaying = true;
-                audioIcon.className = 'fas fa-music';
-            }).catch(() => console.log("Autoplay ditolak"));
+            // Menambahkan error handle disini juga untuk menutupi 404 dari github pages
+            bgm.play().catch(e => {
+                console.warn("Audio otomatis gagal/file audio 404 dari server GitHub", e);
+            });
+            isAudioPlaying = true;
+            audioIcon.className = 'fas fa-music';
 
             // Trigger log visit to Firebase (Catatan No. 8)
             if(window.trackGuestOpen) {
