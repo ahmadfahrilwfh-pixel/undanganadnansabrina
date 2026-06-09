@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wedding of Sabrina & Adnan</title>
     
-    <!-- Google Fonts: Kombinasi Serif Royal, Script Mewah, & Modern Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome 6.4.0 Full Open Source Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Chart.js untuk Grafik RSVP -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
@@ -268,7 +265,6 @@
 </head>
 <body class="lock-scroll">
 
-    <!-- FLOATING ACTIONS CONTROL WIDGET -->
     <div class="floating-controls" id="floating-widget">
         <button class="ctrl-btn" onclick="toggleTheme()" title="Ubah Tema Cerah/Gelap">
             <i class="fas fa-moon" id="theme-icon"></i>
@@ -278,25 +274,18 @@
         </button>
     </div>
 
-    <!-- SOUND BACKSOUND ISLAMI PREMIUM -->
     <audio id="bgm-player" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"></audio>
 
-    <!-- 3D FLOATING PETALS CONTAINER -->
     <div id="petal-container"></div>
 
-    <!-- ==========================================================================
-       1. WELCOME SCREEN
-       ========================================================================== */ -->
     <div id="cover">
         <h3 style="letter-spacing: 5px; font-size: 1rem; font-weight: 600; color: var(--gold-dark);">THE WEDDING OF</h3>
         <h1 class="title-names" style="margin: 5px 0;">Sabrina & Adnan</h1>
         
         <div class="glass-card" style="margin-top: 40px; padding: 30px 45px; min-width: 290px;">
             <p style="margin:0; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);">Kepada Yth. Bapak/Ibu/Saudara/i</p>
-            
-            <!-- Posisi Nama dan Alamat yang disesuaikan menurun ke bawah -->
-            <h2 id="guest-name" style="margin: 15px 0 5px; font-family: 'Montserrat'; font-weight: 600; font-size: 1.6rem; color: var(--text-color); filter:none;">Nama Tamu</h2>
-            <p id="guest-address" style="margin:0; font-size: 0.95rem; color: var(--gold-dark); font-weight: 600;"></p>
+            <h2 id="guest-name" style="margin: 15px 0 10px; font-family: 'Montserrat'; font-weight: 600; font-size: 1.6rem; color: var(--text-color); filter:none;">Nama Tamu</h2>
+            <p id="guest-address" style="margin:0; font-size: 0.9rem; color: var(--gold-dark); font-weight: 500;"></p>
         </div>
         
         <button class="btn-gold" onclick="openInvitation()">
@@ -304,9 +293,6 @@
         </button>
     </div>
 
-    <!-- ==========================================================================
-       PREMIUM BOTTOM MENU NAVIGATION BAR
-       ========================================================================== -->
     <div class="bottom-nav" id="mainNavigation">
         <a href="#home" class="nav-item active"><i class="fa-solid fa-house"></i><span>Home</span></a>
         <a href="#bride" class="nav-item"><i class="fa-solid fa-user-hearts"></i><span>Mempelai</span></a>
@@ -316,12 +302,8 @@
         <a href="#rsvp" class="nav-item"><i class="fa-solid fa-envelope-heart"></i><span>RSVP</span></a>
     </div>
 
-    <!-- ==========================================================================
-       HALAMAN UTAMA CONTENTS WRAPPER
-       ========================================================================== -->
     <div class="main-wrapper">
 
-        <!-- 2. HOME SECTION -->
         <section id="home">
             <div class="reveal-element">
                 <h2>Pernikahan Kami</h2>
@@ -347,7 +329,6 @@
             </div>
         </section>
 
-        <!-- 3. BRIDE & GROOM SECTION -->
         <section id="bride">
             <div class="glass-card reveal-element">
                 <div class="arabic" style="-webkit-text-fill-color: initial; background: none; color: var(--gold-mid); font-weight:700;">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ</div>
@@ -377,7 +358,6 @@
             </div>
         </section>
 
-        <!-- 4. EVENT TIMELINE SECTION -->
         <section id="event">
             <p style="font-size: 1.1rem; font-weight: 500; font-style: italic; color: var(--gold-dark); margin-bottom: 5px;" class="reveal-element">Insyaallah acara akan dilaksanakan pada:</p>
             <h2 class="reveal-element">Agenda Acara</h2>
@@ -404,7 +384,6 @@
             </div>
         </section>
 
-        <!-- 5. LOVE STORY & ADAB -->
         <section id="lovestory">
             <div class="glass-card reveal-element">
                 <h2>Kisah Cinta</h2>
@@ -447,7 +426,6 @@
             </div>
         </section>
 
-        <!-- 6. WEDDING GIFT -->
         <section id="gift" class="reveal-element">
             <div class="glass-card">
                 <h2>Kado Digital</h2>
@@ -456,7 +434,6 @@
             </div>
         </section>
 
-        <!-- 7. RSVP & UCAPAN DESIGN OVERHAUL -->
         <section id="rsvp" class="reveal-element">
             <div class="glass-card">
                 <h2>Konfirmasi Kehadiran</h2>
@@ -504,7 +481,6 @@
             </div>
         </section>
 
-        <!-- 8. PENUTUP -->
         <section id="closing" class="reveal-element">
             <div class="arabic" style="-webkit-text-fill-color: initial; background: none; color: var(--gold-mid); font-weight: 700;">وَالسَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ</div>
             <div style="margin: 35px 0;" class="reveal-element">
@@ -516,7 +492,6 @@
 
     </div>
 
-    <!-- MODAL POPUP 1: NOTIFIKASI SUKSES RSVP -->
     <div id="thankYouModal" class="modal">
         <div class="modal-content glass-card" style="max-width: 400px; padding: 40px 30px;">
             <div style="font-size: 4rem; color: #22c55e; margin-bottom: 15px;"><i class="fa-solid fa-circle-check animate-bounce"></i></div>
@@ -526,7 +501,6 @@
         </div>
     </div>
 
-    <!-- MODAL POPUP 2: DIGITAL GIFT -->
     <div id="giftModal" class="modal">
         <div class="modal-content glass-card" style="padding: 40px 25px; border-radius: 24px;">
             <h2 style="margin-top: 0; font-size: 1.6rem;">Rekening Kado Digital</h2>
@@ -560,9 +534,6 @@
         <p style="letter-spacing: 1.5px; line-height: 1.8; font-weight: 500; color: var(--text-muted);">Developed exclusively by Ahmad Fahril v.2.0<br>© Copyright AMDF 2026. All Rights Reserved.</p>
     </footer>
 
-    <!-- ==========================================================================
-       6. CORE FUNCTIONAL ENGINE CODE
-       ========================================================================== -->
     <script>
         // INTERSECTION OBSERVER ANIMASI SCROLL MULTI-ELEMENT & TRACK ACTIVE NAV MENU
         const revealEntries = () => {
@@ -659,9 +630,7 @@
             }
         }
 
-        // ==================================================================
-        // PENYELARASAN PARSER NAMA & LOKASI (MENCEGAH LINK TERPISAH)
-        // ==================================================================
+        // PARSING UNIQUE PARAMS (?to=Nama_Tamu%Kota)
         const urlParams = new URLSearchParams(window.location.search);
         const toParam = urlParams.get('to') || "Tamu_Undangan";
         
@@ -669,18 +638,14 @@
 
         let guestName = "Tamu Undangan";
         let guestAddress = "";
-        
         if(toParam && toParam !== "Tamu_Undangan") {
-            // MENGGUNAKAN DOUBLE UNDERSCORE (__) AGAR LINK TIDAK ERROR DI WHATSAPP
-            const parts = toParam.split('__');
+            const parts = toParam.split('%');
             if(parts[0]) guestName = parts[0].replace(/_/g, ' ');
             if(parts[1]) guestAddress = "di " + parts[1].replace(/_/g, ' ');
         }
-        
         document.getElementById('guest-name').innerText = guestName;
         document.getElementById('guest-address').innerText = guestAddress;
         document.getElementById('rsvp-name').value = guestName;
-        // ==================================================================
 
         // SELEKSI STATUS INTERAKTIF BUTTON CLICK REACTION
         let activeStatus = "";
@@ -730,9 +695,6 @@
         }, 1000);
     </script>
 
-    <!-- ==========================================================================
-       7. FIRESTORE DATABASE & RESPONSIVE BAR CHART SYSTEM MODULE
-       ========================================================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, addDoc, doc, setDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
