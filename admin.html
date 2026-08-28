@@ -189,9 +189,13 @@
         let visitsMap = {};
 
         const getBaseInvitationUrl = () => {
+            if (window.location.hostname.includes('sabrinaadnan.web.id') || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') {
+                return 'https://sabrinaadnan.web.id/index.html';
+            }
             const currentPath = window.location.pathname;
             const dir = currentPath.substring(0, currentPath.lastIndexOf('/'));
-            return `${window.location.origin}${dir}/index.html`;
+            const baseDir = dir ? (dir.endsWith('/') ? dir : dir + '/') : '/';
+            return `${window.location.origin}${baseDir}index.html`.replace(/([^:]\/)\/+/g, "$1");
         };
 
         window.showNotification = (type, title, message) => {
@@ -298,8 +302,8 @@
                     ? `<span class="bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.05)]"><i class="fa-solid fa-check-double mr-1"></i> Telah Dibuka</span>` 
                     : `<span class="bg-zinc-800 text-zinc-400 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-zinc-700"><i class="fa-solid fa-envelope mr-1"></i> Belum Dibuka</span>`;
 
-                // Set up teks pesan WhatsApp template royal template
-                const messageText = `Halo *${guest.name}*,\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan *Sabrina & Adnan*.\n\nBerikut tautan undangan digital khusus Anda:\n${generatedLink}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir. Terima kasih.`;
+                // Set up teks pesan WhatsApp sopan dan lengkap
+                const messageText = `Kepada Yth.\nBapak/Ibu/Saudara/i\n*${guest.name}*\n__________________________\n\n*Assalamu'alaikum Wr. Wb.*\n\n_*Bismillahirrahmanirrahim.*_\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i, teman sekaligus sahabat, untuk menghadiri acara pernikahan kami:\n\n*Sabrina Aulia Rahma Hidayanto*\n           *&*\n*Adnan Abdul Karim*\n\nBerikut tautan untuk info lengkap dari acara kami:\n${generatedLink}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.\n\n*Wassalamu'alaikum Wr. Wb.*\n\nTerima Kasih.\n\nHormat kami,\n*Sabrina & Adnan*\n__________________________\n_*Simpan nomor jika link tidak dapat disentuh atau salin link ke browser untuk membuka undangan_`;
                 const waUrl = `https://api.whatsapp.com/send?phone=${formattedWA}&text=${encodeURIComponent(messageText)}`;
 
                 const tableRow = document.createElement('tr');
@@ -316,7 +320,7 @@
                         <input type="text" value="${generatedLink}" readonly class="bg-zinc-950 border border-zinc-800 rounded-lg p-1.5 text-[10px] text-zinc-400 w-40 focus:outline-none hidden xl:inline-block">
                         
                         ${formattedWA ? `
-                        <a href="${waUrl}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white p-2 rounded-lg transition-all flex items-center gap-1.5 active:scale-90" title="Kirim Tautan via WhatsApp">
+                        <a href="${waUrl}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white p-2 rounded-lg transition-all flex items-center gap-1.5 active:scale-90" title="Kirim Pesan via WhatsApp">
                             <i class="fa-brands fa-whatsapp text-sm"></i>
                         </a>
                         ` : `
@@ -325,7 +329,10 @@
                         </button>
                         `}
 
-                        <button class="copy-btn bg-zinc-900 hover:bg-amber-400 hover:text-slate-950 border border-zinc-700 hover:border-amber-400 p-2 rounded-lg transition-all text-zinc-300 flex items-center gap-1.5 active:scale-90" data-link="${generatedLink}" title="Salin Tautan">
+                        <button class="copy-msg-btn bg-zinc-900 hover:bg-emerald-600 hover:text-white border border-zinc-700 hover:border-emerald-500 p-2 rounded-lg transition-all text-zinc-300 flex items-center gap-1.5 active:scale-90" data-msg="${encodeURIComponent(messageText)}" title="Salin Format Teks Pesan WhatsApp Lengkap">
+                            <i class="fa-regular fa-comment-dots"></i>
+                        </button>
+                        <button class="copy-btn bg-zinc-900 hover:bg-amber-400 hover:text-slate-950 border border-zinc-700 hover:border-amber-400 p-2 rounded-lg transition-all text-zinc-300 flex items-center gap-1.5 active:scale-90" data-link="${generatedLink}" title="Salin Hanya Link URL">
                             <i class="fa-regular fa-copy"></i>
                         </button>
                         <button class="delete-guest-btn bg-zinc-900 hover:bg-rose-500 hover:text-white border border-zinc-700 hover:border-rose-500 p-2 rounded-lg transition-all text-rose-500 flex items-center gap-1.5 active:scale-90" data-id="${guest.id}" data-name="${guest.name}" title="Hapus Tamu">
@@ -339,6 +346,17 @@
 
         // DELEGASI EVENT UNTUK TOMBOL TABEL
         document.getElementById('guestTableBody').addEventListener('click', async (e) => {
+            const copyMsgBtn = e.target.closest('.copy-msg-btn');
+            if(copyMsgBtn) {
+                const msgText = decodeURIComponent(copyMsgBtn.getAttribute('data-msg'));
+                navigator.clipboard.writeText(msgText).then(() => {
+                    const originalContent = copyMsgBtn.innerHTML;
+                    copyMsgBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-500"></i>';
+                    window.showNotification('success', 'Teks Berhasil Disalin', 'Format pesan undangan WhatsApp lengkap siap ditempel (paste).');
+                    setTimeout(() => { copyMsgBtn.innerHTML = originalContent; }, 1500);
+                });
+            }
+
             const copyBtn = e.target.closest('.copy-btn');
             if(copyBtn) {
                 const linkText = copyBtn.getAttribute('data-link');
@@ -361,7 +379,6 @@
                         window.showNotification('error', 'Gagal Menghapus', 'Terjadi kesalahan saat menghapus data di database.');
                     }
                 }
-            }
         });
 
         // 3. SISTEM MODERASI UCAPAN & DOA
