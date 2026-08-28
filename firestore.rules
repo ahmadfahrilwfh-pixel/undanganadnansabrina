@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Koleksi data tamu terdaftar (Panel Admin)
+    match /registered_guests/{document} {
+      allow read, write: if true;
+    }
+    
+    // Pelacakan tamu membuka undangan (index.html & admin.html)
+    match /guest_visits/{document} {
+      allow read, write: if true;
+    }
+    
+    // Status konfirmasi kehadiran RSVP (index.html)
+    match /rsvp_status/{document} {
+      allow read, write: if true;
+    }
+    
+    // Pesan doa dan ucapan selamat (index.html & admin.html)
+    match /rsvp_comments/{document} {
+      allow read, write: if true;
+    }
+  }
+}

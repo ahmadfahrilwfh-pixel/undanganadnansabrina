@@ -257,6 +257,8 @@
             });
             renderTable(localCacheGuests);
             updateStats();
+        }, (error) => {
+            console.warn("Visits listener error:", error.message);
         });
 
         // 2. SISTEM MANAJEMEN TAMU (BACA & HAPUS)
@@ -268,6 +270,12 @@
             
             renderTable(localCacheGuests);
             updateStats();
+        }, (error) => {
+            console.warn("Guests listener error:", error.message);
+            const tbody = document.getElementById('guestTableBody');
+            if (tbody && error.code === 'permission-denied') {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-rose-400 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-2"></i> Akses database ditolak. Pastikan Firebase Firestore Security Rules telah diatur ke mode izinkan baca/tulis.</td></tr>';
+            }
         });
 
         function renderTable(dataList) {
@@ -391,6 +399,12 @@
                     </div>
                 `;
             });
+        }, (error) => {
+            console.warn("Comments listener error:", error.message);
+            const container = document.getElementById('commentsContainer');
+            if (container && error.code === 'permission-denied') {
+                container.innerHTML = '<p class="text-rose-400 text-sm col-span-full text-center py-8"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Izin database ditolak (Firestore Rules belum diset).</p>';
+            }
         });
 
         document.getElementById('commentsContainer').addEventListener('click', async (e) => {
